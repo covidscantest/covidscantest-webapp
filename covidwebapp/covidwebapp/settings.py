@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'scandetector',
 ]
 
@@ -126,10 +127,12 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'AKIAWNPVZLXCKAECJM5C')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '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')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'AKIAWNPVZLXCPFEGUVKB')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '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')
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'covidscan-upload-qa')
+AWS_S3_REGION_NAME = 'us-east-1'
+AWS_DEFAULT_ACL = 'bucket-owner-full-control'
 
 django_heroku.settings(locals())
