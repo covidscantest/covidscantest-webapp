@@ -10,6 +10,8 @@ django = "*"
 gunicorn = "*"
 django-heroku = "*"
 dj-database-url = "*"
+django-storages = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.6.10"
