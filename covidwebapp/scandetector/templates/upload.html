@@ -99,6 +99,7 @@
         .btn.success {
             background: green;
         }
+
         .btn.error {
             background: red;
         }
@@ -116,7 +117,12 @@
     <!-- markup -->
     <section class="form" id="imageForm">
         <h1>COVID Scan Test</h1>
-        <form action="">
+        <form
+                action="{% url 'scandetector:result' %}"
+                method="post"
+                enctype="multipart/form-data"
+        >
+            {% csrf_token %}
             <div id="imgContainer">
                 <p>Drag and drop your image here.</p>
                 <p>or</p>
@@ -143,12 +149,11 @@
             dragLave: 'dragleave',
             dragOver: 'dragover',
             dragDrop: 'drop',
-            formChange: 'change',
-            formSubmit: 'submit'
-        }
+            formChange: 'change'
+        };
 
         // button altering
-        const alterButton = (button, remove, add, text, delay=1000) => {
+        const alterButton = (button, remove, add, text, delay = 1000) => {
             return new Promise(resolve => {
                 setTimeout(() => {
                     button.classList.remove(remove);
@@ -157,7 +162,7 @@
                     resolve();
                 }, delay);
             });
-        }
+        };
 
         // event handler
         const handleEvent = e => {
@@ -166,78 +171,36 @@
             // remove all event classes
             Object.values(events).forEach(event => {
                 imageForm.classList.remove(event);
-            })
+            });
 
             // add only current event class
             imageForm.classList.add(e.type);
-            
+
             // when an image is dropped, or selected through the form
             if (e.type === events.dragDrop || e.type === events.formChange) {
-
                 // validate the file is an image (only 1)
                 let dt = e.dataTransfer;
                 let files = e.target.files ? [...e.target.files] : [...dt.files];
                 if (files.length > 1) {
-                alert('You can only upload 1 image at a time.');
+                    alert('You can only upload 1 image at a time.');
                 } else {
                     let file = files[0];
                     fileToUpload = file;
                     if (!file.type.startsWith('image')) {
                         alert('You can only drop valid image files');
                     } else {
-                        
+
                         // file is valid, show it in DOM
                         let img = document.createElement('img');
                         let reader = new FileReader();
                         reader.readAsDataURL(file);
                         reader.onloadend = () => {
-                            img.src= reader.result;
+                            img.src = reader.result;
                             imgContainer.innerHTML = '';
                             imgContainer.appendChild(img);
                         };
 
                     }
-                }
-
-            // form submission
-            } else if (e.type === events.formSubmit) {
-                if (!fileToUpload) {
-                    alert('Please select an image first.');
-                } else {
-
-                    // update button visual to indicate uploading
-                    uploadButton.classList.add('pending', 'uploading');
-                    uploadButton.innerHTML = 'Uploading...';
-
-                    // valid file ready to upload
-                    let formData = new FormData();
-                    formData.append('file', fileToUpload);
-
-                    // do something with the form data, here we make a fake AJAX request
-                    fetch('https://httpbin.org/post', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(result => {
-                        alterButton(uploadButton, 'uploading', 'success', 'Success!')
-                        .then(() => {
-                            imageForm.classList.add('processing');
-                            alterButton(uploadButton, 'success', 'uploading', 'Processing...')
-                            .then(() => {;
-
-                                // fake delays
-                                setTimeout(() => {
-                                    window.location.href += 'result';
-                                }, 5000);
-
-                            });
-                        });
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        alterButton(uploadButton, 'uploading', 'error', 'Error!');
-                    })
                 }
             }
         }
@@ -246,6 +209,6 @@
         Object.values(events).forEach(event => {
             imageForm.addEventListener(event, handleEvent);
         })
-        
+
     </script>
 {% endblock %}
