@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+{% block body_content %}
+
+    <!-- form styles -->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .form {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 3px dashed #44AAFF;
+            transition: all .2s ease;
+            border-radius: .3rem;
+            font-family: sans-serif;
+        }
+
+        .btn {
+            display: inline-block;
+            cursor: pointer;
+            margin-top: 1rem;
+            padding: 1rem 2rem;
+            background: #44AAFF;
+            color: #FFF;
+            border: none;
+            outline: none;
+            border-radius: .3rem;
+            font-weight: bold;
+            font-size: inherit;
+            text-decoration: none;
+            transition: all .2s ease;
+        }
+
+        .btn:hover {
+            background: #2299DD;
+        }
+
+        .number {
+            display: block;
+            font-weight: 900;
+            font-size: 2rem;
+        }
+    </style>
+
+    <!-- markup -->
+    <section class="form">
+        <h1>COVID Scan Test</h1>
+        <p>
+            Our algorithms predict a
+            <span class="number">{{ classes }}</span>
+            chance of COVID-19.
+        </p>
+        <p>
+            <a href="{% url 'scandetector:index' %}" class="btn">Try another scan</a>
+        </p>
+    </section>
+
+{% endblock %}
