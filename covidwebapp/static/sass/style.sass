@@ -1,0 +1,92 @@
+// colors
+@import 'colors'
+
+// breakpoints (starting)
+$tablet: 480px
+$laptop: 960px
+$wide: 1200px
+
+
+/* ========================================= */
+/* GENERAL STYLES */
+/* ========================================= */
+
+// online resources
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap')
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons')
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css')
+
+
+// everything else
+*
+  box-sizing: border-box
+
+html
+  font-family: 'Open Sans', sans-serif
+  font-size: 16px
+  --sizePadding: 2rem
+
+  @media screen and (min-height: 1000px)
+    font-size: 22px
+    --sizePadding: 4rem
+
+html, body, main
+  padding: 0
+  margin: 0
+  height: 100%
+
+body
+  background-size: cover
+  background-position: center
+  background-color: $colorBackground
+  color: $colorText
+
+  // background image used for dark theme
+
+  // @media screen and (min-width: $laptop)
+  //   background-image: url('../img/virus.jpg')
+
+main
+  background: rgba($colorBackground, 0.75)
+  display: flex
+  flex-direction: column
+
+section[disabled] .btn
+  opacity: 0.8
+  pointer-events: none
+
+.wrapper
+  height: 100%
+  width: calc(100% - (2 * var(--sizePadding)))
+  max-width: $wide
+  display: flex
+  margin: 0 auto
+
+
+// helper classes
+.transition
+  transition: all .3s ease
+.animated
+  animation-duration: .3s
+.hover
+  display: none
+  @media screen and (hover: hover)
+    display: unset
+.invisible
+  overflow: hidden
+  height: 0
+  width: 0
+  opacity: 0
+  pointer-events: none
+  user-select: none
+.hidden
+  display: none
+
+
+// imports
+@import 'nav'
+@import 'hero'
+@import 'buttons'
+@import 'phone'
+@import 'upload'
+@import 'results'
