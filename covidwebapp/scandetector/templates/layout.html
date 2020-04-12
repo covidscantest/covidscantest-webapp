@@ -3,6 +3,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163424993-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-163424993-1');
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -27,14 +38,31 @@
   <meta property="og:url" content="https://covidscantest.com">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#51BEE0">
+
+  <!-- sharethis buttons -->
+  <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e92739a5d9bf5001283ba59&product=inline-share-buttons' async='async'></script>
+
+  <!-- fontawesome icons -->
+  <script src="https://kit.fontawesome.com/2790ddc3f5.js" crossorigin="anonymous"></script>
   
 </head>
 <body>
 
+  <nav>
+    <div class="wrapper">
+        <a href="{% url 'scandetector:index' %}" class="logo">
+          <img src="{% static 'img/favicon.png' %}" alt="logo">
+          <span>covidscan</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="{% url 'scandetector:how' %}">How It Works</a></li>
+          <li><a href="{% url 'scandetector:team' %}">Team</a></li>
+        </ul>
+    </div>
+  </nav>
+
   {% block body_content %}
   {% endblock %}
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
-  <script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>

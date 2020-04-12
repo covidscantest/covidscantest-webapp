@@ -1,5 +1,6 @@
-/* the hero area is what the users first see when they get to the site */
-.hero
+/* the landing page is what the users first see when they get to the site */
+.landing
+  height: 100%
   justify-content: space-between
 
   .left, .right
@@ -16,6 +17,12 @@
       flex-direction: column
       justify-content: center
       align-items: flex-start
+
+    .links
+      margin: 0 auto
+
+      @media screen and (min-width: $tablet)
+        margin: 0
   
   .right
     position: relative
@@ -30,12 +37,11 @@
     .phone-container
       display: flex
       align-items: center
-      justify-content: center
+      justify-content: flex-end
       height: 100%
       width: 100%
       margin-top: -10vh
       position: relative
-      
 
     img
       display: block
@@ -53,43 +59,6 @@
   p
     font-weight: 300
     margin: .5rem 0 0
-
-
-  // links at bottom
-  ul
-    margin: 0
-    margin-bottom: 2rem
-    padding: 0
-    list-style: none
-
-    &::before
-      content: ""
-      display: block
-      border-top: 1px solid $colorTextAlt
-      margin-bottom: 2rem
-      width: 30%
-      opacity: 0.3
-    
-    @media screen and (min-width: $tablet)
-      font-size: 0.9rem
-      margin-bottom: 3rem
-
-      &::before
-        display: none
-
-    li
-      margin-bottom: .75em
-
-      @media screen and (min-width: $tablet)
-        display: inline-block
-        margin-right: 2em
-
-      a
-        text-decoration: none
-        color: $colorTextAlt
-
-        &:hover
-          text-decoration: underline
   
   .btn-cta
     margin: 2rem 0

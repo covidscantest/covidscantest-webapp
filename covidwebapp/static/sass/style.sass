@@ -1,23 +1,25 @@
 // colors
-@import 'colors'
+$colorText: #000
+$colorTextAlt: #888
+$colorAccent: #63D0F1
+$colorBackground: #FFF
+$colorLine: #CCC
 
 // breakpoints (starting)
 $tablet: 480px
 $laptop: 960px
 $wide: 1200px
 
-
-/* ========================================= */
-/* GENERAL STYLES */
-/* ========================================= */
-
-// online resources
+// external resources
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap')
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons')
 @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css')
 
 
-// everything else
+/* ========================================= */
+/* GENERAL STYLES */
+/* ========================================= */
+
 *
   box-sizing: border-box
 
@@ -30,37 +32,32 @@ html
     font-size: 22px
     --sizePadding: 4rem
 
-html, body, main
+html, body
   padding: 0
   margin: 0
   height: 100%
 
 body
-  background-size: cover
-  background-position: center
   background-color: $colorBackground
   color: $colorText
-
-  // background image used for dark theme
-
-  // @media screen and (min-width: $laptop)
-  //   background-image: url('../img/virus.jpg')
-
-main
-  background: rgba($colorBackground, 0.75)
   display: flex
   flex-direction: column
+
+main
+  flex: 1
 
 section[disabled] .btn
   opacity: 0.8
   pointer-events: none
 
 .wrapper
-  height: 100%
   width: calc(100% - (2 * var(--sizePadding)))
   max-width: $wide
   display: flex
   margin: 0 auto
+
+  &.content
+    display: block
 
 
 // helper classes
@@ -84,9 +81,12 @@ section[disabled] .btn
 
 
 // imports
-@import 'nav'
-@import 'hero'
-@import 'buttons'
-@import 'phone'
-@import 'upload'
-@import 'results'
+@import 'components/nav'
+@import 'components/buttons'
+@import 'components/phone'
+
+@import 'views/landing'
+@import 'views/upload'
+@import 'views/results'
+
+@import 'views/team'
