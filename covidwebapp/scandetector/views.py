@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.views import View
 from .models import ScanUpload
-import tensorflow as tf
+# import tensorflow as tf
 import numpy
 from PIL import Image
 
 
-model = tf.keras.models.load_model('./scandetector/weights/DenseNet121_model.hdf5')
+# model = tf.keras.models.load_model('./scandetector/weights/DenseNet121_model.hdf5')
+model = False
 input_size = (224, 224)
 
 class ScanProcessView(View):
