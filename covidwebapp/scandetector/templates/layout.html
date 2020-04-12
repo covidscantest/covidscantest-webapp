@@ -1,9 +1,40 @@
-<html>
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Covid scans test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- stylesheets and such -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/png">
+
+  <!-- meta info -->
+  <title>COVID Scan Test</title>
+  <meta name="description" content="Check for the probability of COVID-19 in scans using machine learning.">
+  <meta name="author" content="COVID Scan App Team">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta property="og:title" content="COVID Scan Test">
+  <meta property="og:description" content="Check for the probability of COVID-19 in scans using machine learning.">
+  <meta property="og:image" content="{% static 'img/social.jpg' %}">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="764">
+  <meta property="og:image:height" content="409">
+  <meta property="og:image:alt" content="COVID Scan - Check for the probability of COVID-19 in scans using machine learning.">
+  <meta property="og:url" content="https://covidscantest.com">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#51BEE0">
+  
 </head>
 <body>
-    {% block body_content %}
-    {% endblock %}
+
+  {% block body_content %}
+  {% endblock %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+  <script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>

@@ -1,214 +1,139 @@
 {% extends 'layout.html' %}
 
+{% load static %}
+
 {% block body_content %}
 
-    <!-- form styles -->
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+  <!-- markup -->
+  <main id="app" aria-live="polite">
 
-        .form {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            border: 3px dashed #44AAFF;
-            transition: all .2s ease;
-            border-radius: .3rem;
-            font-family: sans-serif;
-        }
+    <nav>
+      <div class="wrapper">
+          <a href="/" class="logo">
+            <img src="{% static 'img/favicon.png' %}" alt="logo">
+            <span>covidscan</span>
+          </a>
+      </div>
+    </nav>
 
-        .form img {
-            width: 50%;
-            display: block;
-            margin: 0 auto;
-            transition: all .2s ease;
-        }
+    <h1 class="hidden">COVID Scan Test</h1>
 
-        .form.dragEnter,
-        .form.dragOver {
-            background: #AAFFFF;
-        }
+    <transition
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+      mode="out-in">
 
-        .form.dragEnter img,
-        .form.dragOver img {
-            opacity: 0.5;
-        }
+      <!-- ====================================================================== 
+      UPLOAD VIEW
+      ====================================================================== -->
+      <section key="upload" class="wrapper upload" :disabled="uploading === 1" v-if="view==='upload'">
+        <form @submit.prevent="handleFormSubmit" action="">
+          <div class="drop-area drop-disabled">
+            <transition
+              enter-active-class="animated fadeIn"
+              leave-active-class="animated fadeOut"
+              mode="out-in">
+              <p v-if="!image">
+                Select a file to&nbsp;upload
+                <span class="hover hidden">or drag and drop here</span>
+                <i>CXR image file, up to 2MB</i>
+              </p>
+              <img v-else :src="image">
+            </transition>
+          </div>
 
-        .form.processing {
-            pointer-events: none;
-        }
+          <div class="buttons">
+            <label for="imgInput" class="btn" tabIndex=0>
+              <i class="material-icons">folder_open</i>
+              Browse files
+            </label>
+            <input @change="handleFileInput" type="file" class="invisible" name="imgInput" id="imgInput" accept="image/*">
+            
+  
+            <button type="submit" :class="'btn btn-alt state-' + uploading">
+              <i class="material-icons">[[ uploading === 0 ? 'cloud_upload' : uploading === 1 ? 'hourglass_empty' : 'cloud_done' ]]</i>
+              [[ uploading === 0 ? 'Upload now' : uploading === 1 ? 'Uploading...' : 'Complete' ]]
+            </button>
+          </div>
 
-        input {
-            display: none;
-        }
-
-        .btn {
-            display: inline-block;
-            cursor: pointer;
-            margin-top: 1rem;
-            padding: 1rem 2rem;
-            background: #44AAFF;
-            color: #FFF;
-            border: none;
-            outline: none;
-            border-radius: .3rem;
-            font-weight: bold;
-            font-size: inherit;
-            text-decoration: none;
-            transition: all .2s ease;
-        }
-
-        .btn:hover {
-            background: #2299DD;
-        }
-
-        .btn.btn-submit {
-            background: #000;
-        }
-
-        .btn.btn-submit:hover {
-            background: #444;
-        }
-
-        .btn.pending {
-            pointer-events: none;
-        }
-
-        .btn.uploading {
-            background: #000000c5;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn.uploading::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: -50%;
-            height: 0.2rem;
-            width: 50%;
-            background: #BBB;
-            animation: load 1s infinite;
-        }
-
-        .btn.success {
-            background: green;
-        }
-
-        .btn.error {
-            background: red;
-        }
-
-        @keyframes load {
-            0%, 100% {
-                transform: translateX(0)
-            }
-            99.9% {
-                transform: translateX(300%);
-            }
-        }
-    </style>
-
-    <!-- markup -->
-    <section class="form" id="imageForm">
-        <h1>COVID Scan Test</h1>
-        <form
-                action="{% url 'scandetector:result' %}"
-                method="post"
-                enctype="multipart/form-data"
-        >
-            {% csrf_token %}
-            <div id="imgContainer">
-                <p>Drag and drop your image here.</p>
-                <p>or</p>
-            </div>
-            <div>
-                <input type="file" name="image" id="image" accept="image/*">
-                <label class="btn" for="image">Browse files...</label>
-            </div>
-            <button class="btn btn-submit" id="uploadBtn" type="submit">Upload Image</button>
+          
+          
         </form>
-    </section>
+        <a href="#" @click.prevent="cancel" class="cancel">Cancel</a>
+      </section>
 
-    <!-- script -->
-    <script>
-        // data setup
-        let fileToUpload = null;
 
-        // events setup
-        const uploadButton = document.getElementById('uploadBtn')
-        const imageForm = document.getElementById('imageForm');
-        const imgContainer = document.getElementById('imgContainer');
-        const events = {
-            dragEnter: 'dragenter',
-            dragLave: 'dragleave',
-            dragOver: 'dragover',
-            dragDrop: 'drop',
-            formChange: 'change'
-        };
+      <!-- ====================================================================== 
+      RESULTS VIEW
+      ====================================================================== -->
+      <section key="results" class="wrapper results" v-else-if="view==='results'">
+        <h2>Results</h2>
+        <p>
+          Our algorithms predict a <span class="prob">[[ probability ]]%</span> chance of COVID-19 infection.
+          <span class="subtext">Predictions are not a final source of truth.</span>
+        </p>
 
-        // button altering
-        const alterButton = (button, remove, add, text, delay = 1000) => {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    button.classList.remove(remove);
-                    button.classList.add(add);
-                    button.innerHTML = text;
-                    resolve();
-                }, delay);
-            });
-        };
+        <button class="btn btn-alt" @click="cancel('upload')">
+          <i class="material-icons">redo</i>
+          Scan again
+        </button>
+        
+      </section>
 
-        // event handler
-        const handleEvent = e => {
-            e.preventDefault();
 
-            // remove all event classes
-            Object.values(events).forEach(event => {
-                imageForm.classList.remove(event);
-            });
+      <!-- ====================================================================== 
+      DEFAULT VIEW
+      ====================================================================== -->
+      <section key="hero" class="wrapper hero animated fadeIn" v-else>
+        <div class="left">
+          <article>
+            <h1>
+              Machine learning <span>for early detection.</span>
+            </h1>
+            <p class="subtitle">
+              Powered by TensorFlow Technology
+            </p>
+            <button @click="view='upload'" class="btn btn-cta">
+              <i class="material-icons">image_search</i>
+              <span>
+                <b>Scan Now</b>
+                <em>Test for COVID-19 probability</em>
+              </span>
+            </button>
+          </article>   
+          <ul class="links">
+            <li><a href="#">How It Works</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
 
-            // add only current event class
-            imageForm.classList.add(e.type);
+        <div class="right">
+          <div class="phone-container">
+            <div class="phone">
+              <div class="notch"></div>
+              <div class="volume-buttons">
+                <div class="vb vb-ringer"></div>
+                <div class="vb vb-up"></div>
+                <div class="vb vb-down"></div>
+              </div>
+              <div class="power-button"></div>
+              <div class="screen">
+                <img  draggable="false" src="{% static 'img/app-layout.png' %}" alt="COVID Scan app screenshot">
+              </div>
+            </div>
+            <div class="phone-popup">
+              <img  draggable="false" src="{% static 'img/result-layout.png' %}" alt="COVID Scan results screenshot">
+            </div>
+          </div>
+        </div>
+      </section>
 
-            // when an image is dropped, or selected through the form
-            if (e.type === events.dragDrop || e.type === events.formChange) {
-                // validate the file is an image (only 1)
-                let dt = e.dataTransfer;
-                let files = e.target.files ? [...e.target.files] : [...dt.files];
-                if (files.length > 1) {
-                    alert('You can only upload 1 image at a time.');
-                } else {
-                    let file = files[0];
-                    fileToUpload = file;
-                    if (!file.type.startsWith('image')) {
-                        alert('You can only drop valid image files');
-                    } else {
 
-                        // file is valid, show it in DOM
-                        let img = document.createElement('img');
-                        let reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onloadend = () => {
-                            img.src = reader.result;
-                            imgContainer.innerHTML = '';
-                            imgContainer.appendChild(img);
-                        };
+      
 
-                    }
-                }
-            }
-        }
+    </transition>
 
-        // add listeners
-        Object.values(events).forEach(event => {
-            imageForm.addEventListener(event, handleEvent);
-        })
-
-    </script>
+  </main>
+    
 {% endblock %}

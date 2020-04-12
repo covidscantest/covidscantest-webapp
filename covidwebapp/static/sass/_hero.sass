@@ -1,0 +1,101 @@
+/* the hero area is what the users first see when they get to the site */
+.hero
+  justify-content: space-between
+
+  .left, .right
+    flex: 1
+
+  .left
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+
+    article
+      flex: 1
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: flex-start
+  
+  .right
+    position: relative
+    display: none
+    flex-direction: column
+    justify-content: center
+    align-items: center
+
+    @media screen and (min-width: $laptop)
+      display: flex
+    
+    .phone-container
+      display: flex
+      align-items: center
+      justify-content: center
+      height: 100%
+      width: 100%
+      margin-top: -10vh
+      position: relative
+      
+
+    img
+      display: block
+
+  h1
+    font-size: 1.8rem
+    font-weight: 300
+    line-height: 1.2
+    margin: 0
+
+    span
+      display: block
+      font-weight: 700
+    
+  p
+    font-weight: 300
+    margin: .5rem 0 0
+
+
+  // links at bottom
+  ul
+    margin: 0
+    margin-bottom: 2rem
+    padding: 0
+    list-style: none
+
+    &::before
+      content: ""
+      display: block
+      border-top: 1px solid $colorTextAlt
+      margin-bottom: 2rem
+      width: 30%
+      opacity: 0.3
+    
+    @media screen and (min-width: $tablet)
+      font-size: 0.9rem
+      margin-bottom: 3rem
+
+      &::before
+        display: none
+
+    li
+      margin-bottom: .75em
+
+      @media screen and (min-width: $tablet)
+        display: inline-block
+        margin-right: 2em
+
+      a
+        text-decoration: none
+        color: $colorTextAlt
+
+        &:hover
+          text-decoration: underline
+  
+  .btn-cta
+    margin: 2rem 0
+
+    i
+      font-size: 2em
+
+    @media screen and (min-height: 640px)
+      margin: 3rem 0

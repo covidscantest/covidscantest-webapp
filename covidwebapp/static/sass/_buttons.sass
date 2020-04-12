@@ -1,0 +1,72 @@
+.btn
+  display: flex
+  font-family: inherit
+  font-size: inherit
+  text-align: left
+  font-size: 1rem
+  line-height: 1
+  padding: 1em
+  margin-bottom: 1em
+  border-radius: .3em
+  background: none
+  outline: none
+  width: 100%
+  cursor: pointer
+  color: inherit
+  border: 1px solid $colorTextAlt
+  user-select: none
+  @extend .transition
+  
+  @media screen and (hover: hover)
+    &:hover, &:focus
+      background: rgba($colorAccent, 0.08)
+      border-color: rgba($colorAccent, 0.7)
+  
+  &.btn-alt
+    background: $colorText
+    color: $colorBackground
+    border-color: $colorText
+    
+    &:active
+      color: lighten($colorAccent, 5%)
+      border-color: lighten($colorAccent, 5%)
+
+    @media screen and (hover: hover)
+      &:hover, &:focus
+        color: lighten($colorAccent, 5%)
+        border-color: lighten($colorAccent, 5%)
+
+  @media screen and (min-width: $tablet)
+    display: inline-flex
+    width: unset
+  
+  a
+    text-decoration: none
+    color: inherit
+
+  i
+    display: inline
+    margin-right: .25em
+  
+  &.state-1 i
+    animation: spin 1s ease infinite
+
+  span
+    display: inline
+
+  b
+    display: block
+  
+  em
+    display: inline-block
+    margin-top: -1em
+    font-size: 0.7em
+    font-style: normal
+    color: $colorTextAlt
+
+/* button icon spin animation */
+@keyframes spin
+  0%
+    transform: rotate(0)
+  100%
+    transform: rotate(360deg)
