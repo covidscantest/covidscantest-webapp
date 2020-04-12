@@ -7,15 +7,6 @@
   <!-- markup -->
   <main id="app" aria-live="polite">
 
-    <nav>
-      <div class="wrapper">
-          <a href="/" class="logo">
-            <img src="{% static 'img/favicon.png' %}" alt="logo">
-            <span>covidscan</span>
-          </a>
-      </div>
-    </nav>
-
     <h1 class="hidden">COVID Scan Test</h1>
 
     <transition
@@ -84,7 +75,7 @@
       <!-- ====================================================================== 
       DEFAULT VIEW
       ====================================================================== -->
-      <section key="hero" class="wrapper hero animated fadeIn" v-else>
+      <section key="landing" class="wrapper landing animated fadeIn" v-else>
         <div class="left">
           <article>
             <h1>
@@ -100,12 +91,8 @@
                 <em>Test for COVID-19 probability</em>
               </span>
             </button>
-          </article>   
-          <ul class="links">
-            <li><a href="#">How It Works</a></li>
-            <li><a href="#">Team</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
+            <div class="links sharethis-inline-share-buttons"></div>
+          </article>
         </div>
 
         <div class="right">
@@ -135,5 +122,9 @@
     </transition>
 
   </main>
+
+  <!-- these scripts are only needed in this file -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+  <script src="{% static 'js/app.js' %}"></script>
     
 {% endblock %}
