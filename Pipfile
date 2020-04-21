@@ -11,10 +11,11 @@ gunicorn = "*"
 dj-database-url = "*"
 django-storages = "*"
 boto3 = "*"
-tensorflow = "~=2.1.0"
 h5py = "*"
 pillow = "*"
 whitenoise = "*"
+torch = "*"
+torchvision = "*"
 
 [requires]
 python_version = "3.6.10"

@@ -64,5 +64,10 @@
   {% block body_content %}
   {% endblock %}
 
+  <form style="display: none;" action="{% url 'scandetector:result' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="image">
+      <input type="submit">
+  </form>
 </body>
 </html>
