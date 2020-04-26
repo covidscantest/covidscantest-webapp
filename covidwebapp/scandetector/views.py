@@ -1,5 +1,9 @@
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import ScanUpload
 import pickle
 import torch
@@ -8,7 +12,7 @@ import torchvision.transforms as transforms
 import tensorflow.keras as ks
 from PIL import Image
 
-def get_xray_ornot_model(input_shape):
+def get_xray_or_not_model(input_shape):
     model = ks.models.Sequential()
     model.add(ks.layers.Conv2D(32, (3, 3), input_shape=input_shape))
     model.add(ks.layers.Activation('relu'))
@@ -30,14 +34,22 @@ def get_xray_ornot_model(input_shape):
     model.add(ks.layers.Activation('sigmoid'))
     return model
 
-model_obj = pickle.load(open('./scandetector/weights/googlenet_final_0423_cpu.pckl', 'rb'))
-torch_model = torchmodels.googlenet(num_classes=3)
-torch_model.load_state_dict(model_obj['model_state_dict'])
-torch_model.eval()
+def get_healthy_or_not_model():
+    model_obj = pickle.load(open('./scandetector/weights/googlenet_final_0423_cpu.pckl', 'rb'))
+    torch_model = torchmodels.googlenet(num_classes=3)
+    torch_model.load_state_dict(model_obj['model_state_dict'])
+    torch_model.eval()
+    return torch_model
 
-xray_ornot_model = get_xray_ornot_model(input_shape=(150, 150, 3))
+
+xray_or_not_model = get_xray_or_not_model(input_shape=(150, 150, 3))
+xray_or_not_model.load_weights('./scandetector/weights/xray_or_not_0426.h5')
 
 
+torch_model = False
+#torch_model = get_healthy_or_not_model()
+
+@method_decorator(csrf_exempt, name='dispatch')
 class ScanProcessView(View):
     template_name = 'result.html'
 
@@ -46,7 +58,7 @@ class ScanProcessView(View):
         return [original_img]
 
     def calc_notxray_prob(self, img):
-        return 0.2
+        return 0.7
 
     def calc_healthy_prob(self, img_set):
         return 0.7
@@ -65,21 +77,21 @@ class ScanProcessView(View):
         if self.calc_notxray_prob(pil_image) > 0.5:
             final_result['not_xray'] = True
 
-        transform = transforms.Compose(
-            [
-                transforms.Resize(299),
-                transforms.CenterCrop(299),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            ])
-        norm_img = transform(pil_image)
-        input_tensor = norm_img.view(1, 3, 299, 299)
-        output_tensor = torch_model(input_tensor)
-        predicted_probs_tensor = torch.nn.functional.softmax(output_tensor[0], dim=0)
+        #transform = transforms.Compose(
+        #    [
+        #        transforms.Resize(299),
+        #        transforms.CenterCrop(299),
+        #        transforms.ToTensor(),
+        #        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        #    ])
+        #norm_img = transform(pil_image)
+        #input_tensor = norm_img.view(1, 3, 299, 299)
+        #output_tensor = torch_model(input_tensor)
+        #predicted_probs_tensor = torch.nn.functional.softmax(output_tensor[0], dim=0)
 
         new_upload = ScanUpload(scan_file=image_upload)
         new_upload.save()
 
-        classes_list = predicted_probs_tensor.tolist()
+        #classes_list = predicted_probs_tensor.tolist()
 
-        return render(request, self.template_name, {'classes': classes_list})
+        return JsonResponse(final_result)#render(request, self.template_name, {'classes': classes_list})
