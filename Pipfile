@@ -16,6 +16,7 @@ pillow = "*"
 whitenoise = "*"
 torch = "*"
 torchvision = "*"
+tensorflow = "*"
 
 [requires]
 python_version = "3.6.10"

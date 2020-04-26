@@ -5,21 +5,66 @@ import pickle
 import torch
 import torchvision.models as torchmodels
 import torchvision.transforms as transforms
-import numpy
+import tensorflow.keras as ks
 from PIL import Image
 
-model_obj = pickle.load(open('./scandetector/weights/pytorch_inceptionv3_final.pckl', 'rb'))
-torch_model = torchmodels.inception.inception_v3(num_classes=3)
+def get_xray_ornot_model(input_shape):
+    model = ks.models.Sequential()
+    model.add(ks.layers.Conv2D(32, (3, 3), input_shape=input_shape))
+    model.add(ks.layers.Activation('relu'))
+    model.add(ks.layers.MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(ks.layers.Conv2D(32, (3, 3)))
+    model.add(ks.layers.Activation('relu'))
+    model.add(ks.layers.MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(ks.layers.Conv2D(64, (3, 3)))
+    model.add(ks.layers.Activation('relu'))
+    model.add(ks.layers.MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(ks.layers.Flatten())
+    model.add(ks.layers.Dense(64))
+    model.add(ks.layers.Activation('relu'))
+    model.add(ks.layers.Dropout(0.5))
+    model.add(ks.layers.Dense(1))
+    model.add(ks.layers.Activation('sigmoid'))
+    return model
+
+model_obj = pickle.load(open('./scandetector/weights/googlenet_final_0423_cpu.pckl', 'rb'))
+torch_model = torchmodels.googlenet(num_classes=3)
 torch_model.load_state_dict(model_obj['model_state_dict'])
 torch_model.eval()
+
+xray_ornot_model = get_xray_ornot_model(input_shape=(150, 150, 3))
 
 
 class ScanProcessView(View):
     template_name = 'result.html'
 
+    #this function should generate bunch of images with minor distortions
+    def generate_noizy_set(self, original_img):
+        return [original_img]
+
+    def calc_notxray_prob(self, img):
+        return 0.2
+
+    def calc_healthy_prob(self, img_set):
+        return 0.7
+
+    def calc_pneumo_prob(self, img_set):
+        return 0.3
+
+    def calc_covid_prob(self, img_set):
+        return 0.01
+
     def post(self, request):
         image_upload = request.FILES['image']
         pil_image = Image.open(image_upload.file).convert('RGB')
+        final_result = {}
+
+        if self.calc_notxray_prob(pil_image) > 0.5:
+            final_result['not_xray'] = True
+
         transform = transforms.Compose(
             [
                 transforms.Resize(299),
