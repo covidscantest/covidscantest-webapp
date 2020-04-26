@@ -1,3 +1,4 @@
+import numpy
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -58,7 +59,18 @@ class ScanProcessView(View):
         return [original_img]
 
     def calc_notxray_prob(self, img):
-        return 0.7
+        transform = transforms.Compose(
+           [
+               transforms.Resize(150),
+               transforms.CenterCrop(150),
+
+           ]
+        )
+        fixed_image = transform(img)
+        numpy_tensor = numpy.array(fixed_image)
+        numpy_model_input = numpy.expand_dims(numpy_tensor, axis=0)
+        model_output = xray_or_not_model.predict_proba(numpy_model_input)[0]
+        return model_output[0]
 
     def calc_healthy_prob(self, img_set):
         return 0.7
@@ -72,10 +84,10 @@ class ScanProcessView(View):
     def post(self, request):
         image_upload = request.FILES['image']
         pil_image = Image.open(image_upload.file).convert('RGB')
+        print(pil_image)
         final_result = {}
 
-        if self.calc_notxray_prob(pil_image) > 0.5:
-            final_result['not_xray'] = True
+        final_result['xray_prob'] = float(self.calc_notxray_prob(pil_image))
 
         #transform = transforms.Compose(
         #    [
