@@ -22,7 +22,7 @@ DEFAULT_LOGGING['handlers']['console']['filters'] = []
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'xk5c*9pj&3*!5%8_0zfpsb%b0&(ug+ttnt3b&p1kza)nz+$^be')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '<DEFAULT SECRET KEY>')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
