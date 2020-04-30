@@ -1,6 +1,5 @@
 import numpy
 from django.http import JsonResponse
-from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -47,6 +46,8 @@ def get_healthy_or_not_model():
 
 xray_or_not_model = get_xray_or_not_model(input_shape=(150, 150, 3))
 xray_or_not_model.load_weights('./scandetector/weights/xray_or_not_0426.h5')
+
+covid_model = ks.models.load_model('./scandetector/weights/resnet_covid_0429.hdf5')
 
 torch_model = False
 
@@ -118,10 +119,23 @@ class ScanProcessView(View):
         return model_output[0]
 
     def calc_healthy_prob(self, img_set):
-        return 0.7
+        return 0.0
 
     def calc_pneumo_prob(self, img_set):
-        return 0.1
+        return 0.0
 
     def calc_covid_prob(self, img_set):
-        return 0.05
+        img = img_set[0]
+        transform = transforms.Compose(
+            [
+                transforms.Resize(224),
+                transforms.CenterCrop(224),
+
+            ]
+        )
+        fixed_image = transform(img)
+        numpy_tensor = numpy.array(fixed_image)
+        numpy_model_input = numpy.expand_dims(numpy_tensor, axis=0)
+        model_output = covid_model.predict(numpy_model_input)
+        print(model_output)
+        return model_output[0][0]
