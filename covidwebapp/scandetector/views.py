@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import ScanUpload
 from .datascience import covid as ds_covid
 from .datascience import healthy as ds_healthy
+from .datascience import pneumonia as ds_pneumonia
 import torchvision.transforms as transforms
 import tensorflow.keras as ks
 from PIL import Image
@@ -57,7 +58,7 @@ class ScanProcessView(View):
             final_result['healthy_prob'] = '%.4f' % healthy_prob
             rest_prob -= healthy_prob
 
-            pneumonia_prob = float(self.calc_pneumo_prob(img_with_distortions))
+            pneumonia_prob = float(ds_pneumonia.calc_pneumo_prob(img_with_distortions))
             final_result['pneumonia_prob'] = '%.4f' % (rest_prob * pneumonia_prob)
             rest_prob -= rest_prob * pneumonia_prob
 
@@ -101,6 +102,3 @@ class ScanProcessView(View):
         numpy_model_input = numpy.expand_dims(numpy_tensor, axis=0)
         model_output = xray_or_not_model.predict_proba(numpy_model_input)[0]
         return model_output[0]
-
-    def calc_pneumo_prob(self, img_set):
-        return 0.0
