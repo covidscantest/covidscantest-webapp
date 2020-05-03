@@ -5,9 +5,8 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import ScanUpload
-import pickle
-import torch
-import torchvision.models as torchmodels
+from .datascience import covid as ds_covid
+from .datascience import healthy as ds_healthy
 import torchvision.transforms as transforms
 import tensorflow.keras as ks
 from PIL import Image
@@ -35,24 +34,9 @@ def get_xray_or_not_model(input_shape):
     model.add(ks.layers.Activation('sigmoid'))
     return model
 
-
-def get_healthy_or_not_model():
-    model_obj = pickle.load(open('./scandetector/weights/googlenet_final_0423_cpu.pckl', 'rb'))
-    torch_model = torchmodels.googlenet(num_classes=3)
-    torch_model.load_state_dict(model_obj['model_state_dict'])
-    torch_model.eval()
-    return torch_model
-
-
 xray_or_not_model = get_xray_or_not_model(input_shape=(150, 150, 3))
-xray_or_not_model.load_weights('./scandetector/weights/xray_or_not_0426.h5')
+xray_or_not_model.load_weights('./scandetector/weights/xray/xray_or_not_0426.h5')
 
-covid_model = ks.models.load_model('./scandetector/weights/resnet_covid_0429.hdf5')
-
-torch_model = False
-
-
-# torch_model = get_healthy_or_not_model()
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ScanProcessView(View):
@@ -69,7 +53,7 @@ class ScanProcessView(View):
             img_with_distortions = self.generate_noizy_set(pil_image)
             rest_prob = 1.0
 
-            healthy_prob = float(self.calc_healthy_prob(img_with_distortions))
+            healthy_prob = float(ds_healthy.calc_healthy_prob(img_with_distortions))
             final_result['healthy_prob'] = '%.4f' % healthy_prob
             rest_prob -= healthy_prob
 
@@ -77,7 +61,7 @@ class ScanProcessView(View):
             final_result['pneumonia_prob'] = '%.4f' % (rest_prob * pneumonia_prob)
             rest_prob -= rest_prob * pneumonia_prob
 
-            covid_prob = float(self.calc_covid_prob(img_with_distortions))
+            covid_prob = float(ds_covid.calc_covid_prob(img_with_distortions))
             final_result['covid_prob'] = '%.4f' % (rest_prob * covid_prob)
             rest_prob -= rest_prob * covid_prob
 
@@ -118,24 +102,5 @@ class ScanProcessView(View):
         model_output = xray_or_not_model.predict_proba(numpy_model_input)[0]
         return model_output[0]
 
-    def calc_healthy_prob(self, img_set):
-        return 0.0
-
     def calc_pneumo_prob(self, img_set):
         return 0.0
-
-    def calc_covid_prob(self, img_set):
-        img = img_set[0]
-        transform = transforms.Compose(
-            [
-                transforms.Resize(224),
-                transforms.CenterCrop(224),
-
-            ]
-        )
-        fixed_image = transform(img)
-        numpy_tensor = numpy.array(fixed_image)
-        numpy_model_input = numpy.expand_dims(numpy_tensor, axis=0)
-        model_output = covid_model.predict(numpy_model_input)
-        print(model_output)
-        return model_output[0][0]
