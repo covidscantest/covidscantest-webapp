@@ -22,7 +22,7 @@ DEFAULT_LOGGING['handlers']['console']['filters'] = []
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xk5c*9pj&3*!5%8_0zfpsb%b0&(ug+ttnt3b&p1kza)nz+$^be'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '<DEFAULT SECRET KEY>')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'covidwebapp.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://cpulrapxilwxqc:d5bcdae8a17952e74f5fd3ed9cebe4d3953c2b5e8de4932cdba009bb34d9729a@ec2-3-234-109-123.compute-1.amazonaws.com:5432/d48o57fkdd323v',
+        default='<PAST YOUR DB CONNECTION URL HERE>',
         conn_max_age=600,
         ssl_require=True
     )
@@ -129,10 +129,10 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'AKIAWNPVZLXCPFEGUVKB')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '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')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '<AWS ACCESS KEY>')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '<AWS SECRET>')
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'covidscan-upload-qa')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', '<S3 BUCKET NAME>')
 AWS_S3_REGION_NAME = 'us-east-1'
 AWS_DEFAULT_ACL = 'bucket-owner-full-control'
