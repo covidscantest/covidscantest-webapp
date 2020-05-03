@@ -67,6 +67,8 @@
   <form style="display: none;" action="{% url 'scandetector:result' %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <input type="file" name="image">
+      <input type="checkbox" name="requiredCheckbox" required>By clicking this checkbox you are acknowledging that this scan will not replace medical advice, and that the prediction is "not sure accuracy percentage" accurate.</input>
+      <input type="checkbox" name="requiredCheckbox" required>By clicking this checkbox you are acknowledging that you have read and agreed to our <a href="./privacy-policy.html">Privacy Policy</a></input>
       <input type="submit">
   </form>
 </body>
