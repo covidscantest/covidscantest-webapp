@@ -40,12 +40,8 @@ dense_model_covid = get_densenet_covid_model()
 #dense_model.load_weights('./scandetector/weights/covid/ae_dense_covid_0503.h5')
 
 
-def calc_covid_prob(img_batch):
-    original_pil_img = img_batch[0]
-    numpy_img = numpy.array(original_pil_img)
-    img = tf.convert_to_tensor(value=numpy_img)
-    img = tf.image.convert_image_dtype(img, tf.float32)
-    img = tf.image.resize(img, [IMAGE_SHAPE[0], IMAGE_SHAPE[1]])
+def calc_covid_prob(tf_image):
+    img = tf.image.resize(tf_image, [IMAGE_SHAPE[0], IMAGE_SHAPE[1]])
     img_tensor = tf.expand_dims(img, 0)
     model_output = dense_model_covid.predict(img_tensor)[0][0]
     return model_output
