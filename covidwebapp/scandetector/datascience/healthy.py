@@ -6,6 +6,7 @@ IMAGE_SHAPE = (320, 320, 3)
 
 pretrined_densenet = tf.keras.applications.densenet.DenseNet201(include_top=False, weights='imagenet', input_tensor=None,
                                                               input_shape=IMAGE_SHAPE, pooling=None, classes=1000)
+pretrined_densenet.trainable = False
 densenet_model_healthy = create_model(pretrined_densenet)
 densenet_model_healthy.load_weights('./scandetector/weights/healthy/as_densenet201_healthy_0503_1.h5')
 
