@@ -4,6 +4,11 @@
 
 {% block body_content %}
 
+  <style>
+    .checkbox {
+      margin-top: 2em;
+    }
+  </style>
   <main id="app" aria-live="polite">
 
     <h1 class="hidden">COVID Scan Test</h1>
@@ -74,6 +79,9 @@
       <!-- ====================================================================== 
       DEFAULT VIEW
       ====================================================================== -->
+
+
+
       <section key="landing" class="wrapper landing animated fadeIn" v-else>
         <div class="left">
           <article>
@@ -83,15 +91,17 @@
             <p class="subtitle">
               Powered by TensorFlow Technology
             </p>
-            <input type="checkbox" name="requiredCheckbox" required>By clicking this checkbox you are acknowledging that this scan will not replace medical advice, and that the prediction is "add accuracy percentage here" accurate.</input>
-            <input type="checkbox" name="requiredCheckbox" required>By clicking this checkbox you are acknowledging that you have read and agreed to our <a href="./privacy-policy.html">Privacy Policy</a></input>
-            <button @click="view='upload'" class="btn btn-cta">
-              <i class="material-icons">image_search</i>
-              <span>
-                <b>Scan Now</b>
-                <em>Test for COVID-19 probability</em>
-              </span>
-            </button>
+            <form class="frontPageForm" @submit.prevent="view='upload'">            
+              <input class="checkbox" type="checkbox" name="requiredCheckbox" required>By clicking this checkbox you are acknowledging that this scan will not replace medical advice. To see how it all works please visit the <a href="/how-it-works">How It Works</a> page.</input> <br />
+              <input class="checkbox" type="checkbox" name="requiredCheckbox" required>By clicking this checkbox you are acknowledging that you have read and agreed to our <a href="/privacypolicy">Privacy Policy</a></input> <br />
+              <button type="submit" class="btn btn-cta">
+                <i class="material-icons">image_search</i>
+                <span>
+                  <b>Scan Now</b>
+                  <em>Test for COVID-19 probability</em>
+                </span>
+              </button>
+            </form>
             <div class="links sharethis-inline-share-buttons"></div>
           </article>
         </div>
