@@ -1,0 +1,123 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_content %}
+
+<section class="how content">
+  <header>
+    <h1>How it works</h1>
+  </header>
+
+  <div class="body wrapper">
+    <article>
+      <p>
+        The goal of this project was to harness advancements in Machine Learning to help fight the COVID-19 pandemic by making Deep Learning Neural Networks easy to use for everyone.
+      </p>
+    </article>
+
+    <article>
+      <h2>About the system</h2>
+      <h3>1. The Web Application</h3>
+      <p>This allows users to upload scans and run prediction models in a web browser.</p>
+
+      <h3>2. Machine Learning Algorithms</h3>
+      <p>These consist of 4 phases, each with a specific analysis occurring:</p>
+
+      <ul>
+        <li>
+          The first phase predicts the probability of the image being an xray scan at all. We use a CNN (convolutional neural network) that we trained on a set of images that was a mix of xray scans and images of random objects.
+        </li>
+
+        <li>
+          The second phase predicts the probability of the image being an xray of healthy lungs. This phase uses DenseNet201 trained on the CheXpert dataset where labels were reduced to binary outcomes (healthy/unhealthy).
+        </li>
+
+        <li>
+          The third phase is similar to phase 2, with the exception that it focused on detection pneumonia and other conditions. The same architecture (DenseNet201) and dataset was used (CheXpert).
+        </li>
+
+        <li>
+          The last phase is a DenseNet201 network trained on a COVID-19 xray dataset.
+        </li>
+      </ul>
+
+      <p>
+        Final probabilities are calculated based on the output of each phase, by multiplying the <em>"not detected"</em> outcome of previous phase by the <em>"detected"</em> outcome of current phase.
+      </p>
+
+      <p>The table below shows an example with the calculation of the results</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Analysis</th>
+            <th>Probability</th>
+            <th>Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Healthy / unhealthy</td>
+            <td>60%</td>
+            <td>60%</td>
+          </tr>
+          <tr>
+            <td>Pneumonia</td>
+            <td>50%</td>
+            <td>20% <span>(50% x 40%)</span></td>
+          </tr>
+          <tr>
+            <td>COVID-19</td>
+            <td>10%</td>
+            <td>2% <span>(10% x 20%)</span></td>
+          </tr>
+          <tr>
+            <td><em>other</em></td>
+            <td><span>--</span></td>
+            <td>18% <span>(remaining)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+
+      
+    <article>
+      <h2>Conclusion</h2>
+      <p>
+        We hope someone will find our work useful either from detection, learning, reference or any other aspects. Keep in mind that this is open source software and you <u>use it at you own risk.</u> Machine learning is a powerful technique, but it is not an ultimate source of truth. Every algorithm has its limitations as far as predicting power goes. Stay safe and healthy.
+      </p>
+
+      <h3>Related links:</h3>
+      <ul>
+        <li>
+          <a href="https://github.com/covidscantest/covidscantest-webapp" target="_blank" rel="noopener noreferrer">Project GitHub repo</a>
+        </li>
+        <li>
+          <a href="https://github.com/covidscantest/covidscan-datascience" target="_blank" rel="noopener noreferrer">Project Data Science GitHub repo</a>
+        </li>
+        <li>
+          <a href="https://stanfordmlgroup.github.io/competitions/chexpert/" target="_blank" rel="noopener noreferrer">CheXpert</a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/1911.06475" target="_blank" rel="noopener noreferrer">Winning CheXpert article</a>
+        </li>
+        <li>
+          <a href="https://github.com/ieee8023/covid-chestxray-dataset" target="_blank" rel="noopener noreferrer">COVID-19 dataset</a>
+        </li>
+        <li>
+          <a href="#" target="_blank" rel="noopener noreferrer">Rubics article</a>
+        </li>
+      </ul>
+    </article>
+
+    <article>
+      <h1>Roadmap</h1>
+      <p>
+        According to this <a href="https://www.medrxiv.org/content/10.1101/2020.02.25.20021568v2.full.pdf" target="_blank">paper</a> out of China, a straight-up application of pre-trained UNet++ architecture will perform well in COVID-19 detection.  This may be very useful in parts of the world where healthcare systems get overburdened as the epidemic spreads.  Unfortunately, the Chinese data set is not public and there is no way to verify it. Currently, we are working on a project to improve this score by training many deep networks then making an ensemble model.  The model could be easily deployed and scaled as a web app with AWS or Azure. 
+      </p>
+    </article>
+  </div>
+
+  
+</section>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+// fonts & resets
+@import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css")
+@import url("https://use.typekit.net/som4kpb.css")
+
+// general styles
+*
+  box-sizing: border-box
+
+html
+  height: 100%
+  font-size: 20px
+  font-family: "acumin-pro", sans-serif
+  --colorBG: #222222
+  --colorDim: #888888
+  --colorAlt: #F8F8F8
+  --colorTable: #BBBBBB
+  --colorButtonText: #FFFFFF
+  --colorButton: #5C897E
+  --colorError: #D26F88
+  --sizePadding: 1.7em
+
+  @media screen and (min-width: 640px)
+    font-size: 24px
+    --sizePadding: 3em
+
+body
+  min-height: 100%
+  position: relative
+
+.wrapper
+  width: 100%
+
+  @media screen and (min-width: 640px)
+    max-width: 50rem
+    margin: 0 auto
+
+a
+  color: inherit
+  text-decoration: none
+
+  @media (hover: hover)
+    &:hover
+      text-decoration: underline
+
+
+// partials
+@import "components/nav"
+@import "components/hero"
+@import "components/section"
+@import "components/footer"
+@import "components/grid"
+@import "components/btn"
+@import "components/table"
+
+// views
+@import "views/team"
+@import "views/how"
+@import "views/privacy"
