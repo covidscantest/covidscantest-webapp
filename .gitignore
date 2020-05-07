@@ -130,4 +130,11 @@ dmypy.json
 .pyre/
 
 .hdf5
-weights
+
+*.h5
+
+run_local.sh
+
+
+#folder
+weights/

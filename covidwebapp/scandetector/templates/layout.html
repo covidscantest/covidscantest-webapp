@@ -83,9 +83,17 @@
     </div>
   </footer>
 
+  <!-- hidden form -->
+  <form style="display: none;" action="{% url 'scandetector:result' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="image">
+    <input type="submit">
+
   <!-- interactivity -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
   <script src="{% static 'js/app.js' %}"></script>
 
+  
+  </form>
 </body>
 </html>

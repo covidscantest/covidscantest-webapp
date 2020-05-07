@@ -1,4 +1,5 @@
 import numpy
+import tensorflow as tf
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -45,24 +46,27 @@ class ScanProcessView(View):
 
     def post(self, request):
         image_upload = request.FILES['image']
-        pil_image = Image.open(image_upload.file).convert('RGB')
+        tf_image = image_upload.file.read()
+        tf_image = tf.image.decode_image(tf_image, channels=3, expand_animations=False)
+        tf_image = tf.image.convert_image_dtype(tf_image, tf.float32)
+
         final_result = {}
 
-        xray_prob = float(self.calc_xray_prob(pil_image))
+        xray_prob = float(self.calc_xray_prob(tf_image))
         final_result['xray_prob'] = '%.4f' % xray_prob
         if xray_prob >= 0.5:
-            img_with_distortions = self.generate_noizy_set(pil_image)
+            img_with_distortions = self.generate_noizy_set(tf_image)
             rest_prob = 1.0
 
-            healthy_prob = float(ds_healthy.calc_healthy_prob(img_with_distortions))
+            healthy_prob = float(ds_healthy.calc_healthy_prob(tf_image))
             final_result['healthy_prob'] = '%.4f' % healthy_prob
             rest_prob -= healthy_prob
 
-            pneumonia_prob = float(ds_pneumonia.calc_pneumo_prob(img_with_distortions))
+            pneumonia_prob = float(ds_pneumonia.calc_pneumo_prob(tf_image))
             final_result['pneumonia_prob'] = '%.4f' % (rest_prob * pneumonia_prob)
             rest_prob -= rest_prob * pneumonia_prob
 
-            covid_prob = float(ds_covid.calc_covid_prob(img_with_distortions))
+            covid_prob = float(ds_covid.calc_covid_prob(tf_image))
             final_result['covid_prob'] = '%.4f' % (rest_prob * covid_prob)
             rest_prob -= rest_prob * covid_prob
 
@@ -89,16 +93,8 @@ class ScanProcessView(View):
     def generate_noizy_set(self, original_img):
         return [original_img]
 
-    def calc_xray_prob(self, img):
-        transform = transforms.Compose(
-            [
-                transforms.Resize(150),
-                transforms.CenterCrop(150),
-
-            ]
-        )
-        fixed_image = transform(img)
-        numpy_tensor = numpy.array(fixed_image)
-        numpy_model_input = numpy.expand_dims(numpy_tensor, axis=0)
-        model_output = xray_or_not_model.predict_proba(numpy_model_input)[0]
+    def calc_xray_prob(self, tf_image):
+        img = tf.image.resize(tf_image, [150, 150])
+        model_input = tf.expand_dims(img, 0)
+        model_output = xray_or_not_model.predict_proba(model_input)[0]
         return model_output[0]
