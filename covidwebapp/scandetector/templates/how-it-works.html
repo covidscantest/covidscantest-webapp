@@ -28,13 +28,43 @@
     <div class="howItWorks">
       <h1>How this Works</h1>
       <p>
-        Our model is an ensemble of many pre-trained deep COVNets. Networks that were pre-trained on thorax-image classification tasks were transferred to COVID-19 detection. Then we used a mixture model for aggregation of multiple pre-trained weak classifiers.
+- Intro
+  - Goal of this project was to make advancements in Machine Learning helps fight COVID 19 pandemic by making Deep Learning Neural Networks easy to use for everyone.
+- Details about algorithm
+  - The whole system essentially consist of 2 parts.
+    - Web Application
+      - Web application is what are using right now. It allows to upload scans and run prediction models.
+    - Machine learning part
+      - Our algorithm consist of 4 phases each with specific detection in mind
+        - First phase try to predict probability of the file being xray scan at all. We develop a CNN (convolutional neural network) that we trained on set of images that was mix of xray scans and just regular photos or images of objects .
+        - Second phase is focusing on predicting probability of file beign xray of healthy lungs. This phase use DenseNet201 trained on CheXpert dataset where labels were reduced to binary outcome (healthy/unhealthy)
+        - Third phase similar to previous one, with exception that focus was on detection pneumonia and everything else. Same architecture (DenseNet201) and dataset was used(ChexPert)
+        - Forth and last phase is a DenseNet201 network trained on COVID19 xray dataset.
+      - Final probabilities calculated based on output of each phase, by multiplying the "not detected" outcome of previous phase on "detected" outcome of current phase
+        - Example.
+          - Lets say "healthy/unhealthy" phase predicted 60% healthy/ 40% everything else
+          - Pneumonia phase predicted 50% pneumonia/50% everything else
+          - Covid phase predicted 10% covid/90% everything else
+        - Final probabilities gonna be 60% healthy, 20% pneumonia, 2% covid 19, 18% something else.
+- Final summary
+  - We hope someone will find our work useful either from detection, learning, reference or any other aspect. Keep in mind that this is open source software and you use it on you own risk. Machine learning is a powerful technique, but its not ultimate truth and as every algorithm it has it's limitations as far as predicting power goes. Stay safe and healthy.
+- Links
+  - Link to web app github
+  - Link to DS github
+  - Link to ChexPert
+  - Link to the winning ChexPert article
+  - Link to COVID dataset
+  - Link to Rubics article
       </p>
     </div>
     <div class="roadmap">
-      <h1>Roadmap</h1>
+      <h1>Plans for the future</h1>
       <p>
-        According to this <a href="https://www.medrxiv.org/content/10.1101/2020.02.25.20021568v2.full.pdf" target="_blank">paper</a> out of China, a straight-up application of pre-trained UNet++ architecture will perform well in COVID-19 detection.  This may be very useful in parts of the world where healthcare systems get overburdened as the epidemic spreads.  Unfortunately, the Chinese data set is not public and there is no way to verify it. Currently, we are working on a project to improve this score by training many deep networks then making an ensemble model.  The model could be easily deployed and scaled as a web app with AWS or Azure. 
+  - We plan to increase the accuracy of our algorithm by introducing more neural networks as well as trying different methods to assemble them into final system.
+  - There is a possibility we might extend this system to other image processing problem
+  - We are open and gonna be thrilled to hear you feedback on our work. Feel free to file an issue in github, even better fork our repo and send us merge request. Let's make world better together.
+
+
       </p>
     </div>
   </main>
