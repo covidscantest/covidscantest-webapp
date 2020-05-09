@@ -5,68 +5,90 @@
 {% block body_content %}
 
 
-  <style>
-    .Works-Roadmap {
-      margin: auto auto;
-      width: 80%;
-    }
+    <style>
+        .Works-Roadmap {
+            margin: auto auto;
+            width: 80%;
+        }
 
-    .Works-Roadmap h1 {
-      text-align: center;
-    }
+        .howItWorks {
+            margin-bottom: 5em;
+        }
 
-    .howItWorks {
-      margin-bottom: 5em;
-    }
+    </style>
 
-    .roadmap {
-      border-top: solid 2px black;
-    }
-  </style>
+    <main class="Works-Roadmap">
+        <div class="howItWorks">
+            <h1>How this Works</h1>
+            <p>
+                Goal of this project was to make advancements in Machine Learning helps fight COVID 19 pandemic by
+                making Deep Learning Neural Networks easy to use for everyone.
+            </p>
+            <h2>Details about algorithm</h2>
+            <p>The whole system essentially consist of <b>2 parts</b>.</p>
+            <h3>Web Application</h3>
+            <p>Web application is what are using right now. It allows to upload scans and run prediction models.</p>
+            <h3>Machine learning part</h3>
+            <p>Our algorithm consist of 4 phases each with specific detection in mind</p>
+            <p>
+                First phase try to predict probability of the file being xray scan at all. We develop a CNN
+                (convolutional
+                neural network) that we trained on set of images that was mix of xray scans and just regular photos or
+                images of objects.
+            </p>
+            <p>Second phase is focusing on predicting probability of file beign xray of healthy lungs. This phase use
+                DenseNet201 trained on CheXpert dataset where labels were reduced to binary outcome (healthy/unhealthy)
+            </p>
+            <p>Third phase similar to previous one, with exception that focus was on detection pneumonia and everything
+                else. Same architecture (DenseNet201) and dataset was used(ChexPert)</p>
+            <p>Forth and last phase is a DenseNet201 network trained on COVID19 xray dataset.</p>
+            <p>
+                Final probabilities calculated based on output of each phase, by multiplying the "not detected" outcome
+                of
+                previous phase on "detected" outcome of current phase
+            </p>
+            <div><b>Example:</b></div>
+            <div>Lets say "healthy/unhealthy" phase predicted 60% healthy/ 40% everything else</div>
+            <div>Pneumonia phase predicted 50% pneumonia/50% everything else</div>
+            <div>Covid phase predicted 10% covid/90% everything else</div>
+            <div>Final probabilities gonna be 60% healthy, 20% pneumonia, 2% covid 19, 18% something else.</div>
+            <h2>Final summary</h2>
+            <p>We hope someone will find our work useful either from detection, learning, reference or any other aspect.
+                Keep in mind that this is open source software and you use it on you own risk. Machine learning is a
+                powerful technique, but its not ultimate truth and as every algorithm it has it's limitations as far as
+                predicting power goes. Stay safe and healthy.</p>
+            <h2>Links</h2>
+            <ol>
+                <li>
+                    <a href="https://github.com/covidscantest/covidscantest-webapp">Web app source code</a>
+                </li>
+                <li>
+                    <a href="https://github.com/covidscantest/covidscan-datascience">Machine learning notebooks</a>
+                </li>
+                <li>
+                    <a href="https://stanfordmlgroup.github.io/competitions/chexpert/">Large Chest X-Ray Dataset</a>
+                </li>
+                <li>
+                    <a href="https://arxiv.org/abs/1911.06475">Hierarchical-Learning-V1 (ensemble) Vingroup Big Data Institute</a>
+                </li>
+                <li><a href="https://github.com/ieee8023/covid-chestxray-dataset">COVID X-Ray dataset</a></li>
+                <li><a href="https://rubikscode.net/2020/03/23/detection-of-covid-19-in-chest-x-rays-with-deep-learning/">Covid detection using Tensorflow</a></li>
+            </ol>
 
-  <main class="Works-Roadmap">
-    <div class="howItWorks">
-      <h1>How this Works</h1>
-      <p>
-- Intro
-  - Goal of this project was to make advancements in Machine Learning helps fight COVID 19 pandemic by making Deep Learning Neural Networks easy to use for everyone.
-- Details about algorithm
-  - The whole system essentially consist of 2 parts.
-    - Web Application
-      - Web application is what are using right now. It allows to upload scans and run prediction models.
-    - Machine learning part
-      - Our algorithm consist of 4 phases each with specific detection in mind
-        - First phase try to predict probability of the file being xray scan at all. We develop a CNN (convolutional neural network) that we trained on set of images that was mix of xray scans and just regular photos or images of objects .
-        - Second phase is focusing on predicting probability of file beign xray of healthy lungs. This phase use DenseNet201 trained on CheXpert dataset where labels were reduced to binary outcome (healthy/unhealthy)
-        - Third phase similar to previous one, with exception that focus was on detection pneumonia and everything else. Same architecture (DenseNet201) and dataset was used(ChexPert)
-        - Forth and last phase is a DenseNet201 network trained on COVID19 xray dataset.
-      - Final probabilities calculated based on output of each phase, by multiplying the "not detected" outcome of previous phase on "detected" outcome of current phase
-        - Example.
-          - Lets say "healthy/unhealthy" phase predicted 60% healthy/ 40% everything else
-          - Pneumonia phase predicted 50% pneumonia/50% everything else
-          - Covid phase predicted 10% covid/90% everything else
-        - Final probabilities gonna be 60% healthy, 20% pneumonia, 2% covid 19, 18% something else.
-- Final summary
-  - We hope someone will find our work useful either from detection, learning, reference or any other aspect. Keep in mind that this is open source software and you use it on you own risk. Machine learning is a powerful technique, but its not ultimate truth and as every algorithm it has it's limitations as far as predicting power goes. Stay safe and healthy.
-- Links
-  - Link to web app github
-  - Link to DS github
-  - Link to ChexPert
-  - Link to the winning ChexPert article
-  - Link to COVID dataset
-  - Link to Rubics article
-      </p>
-    </div>
-    <div class="roadmap">
-      <h1>Plans for the future</h1>
-      <p>
-  - We plan to increase the accuracy of our algorithm by introducing more neural networks as well as trying different methods to assemble them into final system.
-  - There is a possibility we might extend this system to other image processing problem
-  - We are open and gonna be thrilled to hear you feedback on our work. Feel free to file an issue in github, even better fork our repo and send us merge request. Let's make world better together.
+            <div class="roadmap">
+                <h1>Plans for the future</h1>
+                <p>
+                <div>We plan to increase the accuracy of our algorithm by introducing more neural networks as well as
+                    trying different methods to assemble them into final system.
+                </div>
+                <div>There is a possibility we might extend this system to other image processing problems</div>
+                <div>We are open and gonna be thrilled to hear you feedback on our work. Feel free to file an issue in
+                    github, even better fork our repo and send us merge request. Let's make world better together.
+                </div>
 
 
-      </p>
-    </div>
-  </main>
+                </p>
+            </div>
+    </main>
 
 {% endblock %}

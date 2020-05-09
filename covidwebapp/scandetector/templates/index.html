@@ -4,138 +4,149 @@
 
 {% block body_content %}
 
-  <style>
-    .checkbox {
-      margin-top: 2em;
-    }
-  </style>
-  <main id="app" aria-live="polite">
+    <style>
+        .checkbox {
+            margin-top: 1em;
+        }
 
-    <h1 class="hidden">COVID Scan Test</h1>
+        .acknowledgements {
+            font-size: 80%;
+        }
+    </style>
+    <main id="app" aria-live="polite">
 
-    <transition
-      enter-active-class="animated fadeIn"
-      leave-active-class="animated fadeOut"
-      mode="out-in">
+        <h1 class="hidden">COVID Scan Test</h1>
 
-      <!-- ====================================================================== 
-      UPLOAD VIEW
-      ====================================================================== -->
-      <section key="upload" class="wrapper upload" :disabled="uploading === 1" v-if="view==='upload'">
-        <form @submit.prevent="handleFormSubmit" action="">
-          <div class="drop-area drop-disabled">
-            <transition
-              enter-active-class="animated fadeIn"
-              leave-active-class="animated fadeOut"
-              mode="out-in">
-              <p v-if="!image">
-                Select a file to&nbsp;upload
-                <span class="hover hidden">or drag and drop here</span>
-                <i>CXR image file, up to 2MB</i>
-              </p>
-              <img v-else :src="image">
-            </transition>
-          </div>
+        <transition
+                enter-active-class="animated fadeIn"
+                leave-active-class="animated fadeOut"
+                mode="out-in">
 
-          <div class="buttons">
-            <label for="imgInput" class="btn" tabIndex=0>
-              <i class="material-icons">folder_open</i>
-              Browse files
-            </label>
-            <input @change="handleFileInput" type="file" class="invisible" name="imgInput" id="imgInput" accept="image/*">
-            
-  
-            <button type="submit" :class="'btn btn-alt state-' + uploading">
-              <i class="material-icons">[[ uploading === 0 ? 'cloud_upload' : uploading === 1 ? 'hourglass_empty' : 'cloud_done' ]]</i>
-              [[ uploading === 0 ? 'Upload now' : uploading === 1 ? 'Uploading...' : 'Complete' ]]
-            </button>
-          </div>
+            <!-- ======================================================================
+            UPLOAD VIEW
+            ====================================================================== -->
+            <section key="upload" class="wrapper upload" :disabled="uploading === 1" v-if="view==='upload'">
+                <form @submit.prevent="handleFormSubmit" action="">
+                    <div class="drop-area drop-disabled">
+                        <transition
+                                enter-active-class="animated fadeIn"
+                                leave-active-class="animated fadeOut"
+                                mode="out-in">
+                            <p v-if="!image">
+                                Select a file to&nbsp;upload
+                                <span class="hover hidden">or drag and drop here</span>
+                                <i>CXR image file, up to 2MB</i>
+                            </p>
+                            <img v-else :src="image">
+                        </transition>
+                    </div>
 
-          
-          
-        </form>
-        <a href="#" @click.prevent="cancel" class="cancel">Cancel</a>
-      </section>
+                    <div class="buttons">
+                        <label for="imgInput" class="btn" tabIndex=0>
+                            <i class="material-icons">folder_open</i>
+                            Browse files
+                        </label>
+                        <input @change="handleFileInput" type="file" class="invisible" name="imgInput" id="imgInput"
+                               accept="image/*">
 
 
-      <!-- ====================================================================== 
-      RESULTS VIEW
-      ====================================================================== -->
-      <section key="results" class="wrapper results" v-else-if="view==='results'">
-        <h2>Results</h2>
-        <p>
-          Our algorithms predict a <span class="prob">[[ probability ]]%</span> chance of COVID-19 infection.
-          <span class="subtext">Predictions are not a final source of truth.</span>
-        </p>
-
-        <button class="btn btn-alt" @click="cancel('upload')">
-          <i class="material-icons">redo</i>
-          Scan again
-        </button>
-        
-      </section>
+                        <button type="submit" :class="'btn btn-alt state-' + uploading">
+                            <i class="material-icons">[[ uploading === 0 ? 'cloud_upload' : uploading === 1 ?
+                                'hourglass_empty' : 'cloud_done' ]]</i>
+                            [[ uploading === 0 ? 'Upload now' : uploading === 1 ? 'Uploading...' : 'Complete' ]]
+                        </button>
+                    </div>
 
 
-      <!-- ====================================================================== 
-      DEFAULT VIEW
-      ====================================================================== -->
+                </form>
+                <a href="#" @click.prevent="cancel" class="cancel">Cancel</a>
+            </section>
 
 
+            <!-- ======================================================================
+            RESULTS VIEW
+            ====================================================================== -->
+            <section key="results" class="wrapper results" v-else-if="view==='results'">
+                <h2>Results</h2>
+                <p>
+                    Our algorithms predict a <span class="prob">[[ probability ]]%</span> chance of COVID-19 infection.
+                    <span class="subtext">Predictions are not a final source of truth.</span>
+                </p>
 
-      <section key="landing" class="wrapper landing animated fadeIn" v-else>
-        <div class="left">
-          <article>
-            <h1>
-              Machine learning <span>for early detection.</span>
-            </h1>
-            <p class="subtitle">
-              Powered by TensorFlow Technology
-            </p>
-            <form class="frontPageForm" @submit.prevent="view='upload'">            
-              <input class="checkbox" type="checkbox" name="requiredCheckbox" required>By clicking this checkbox you are acknowledging that this scan will not replace medical advice. To see how it all works please visit the <a href="/how-it-works">How It Works</a> page.</input> <br />
-              <input class="checkbox" type="checkbox" name="requiredCheckbox" required>By clicking this checkbox you are acknowledging that you have read and agreed to our <a href="/privacypolicy">Privacy Policy</a></input> <br />
-              <button type="submit" class="btn btn-cta">
-                <i class="material-icons">image_search</i>
-                <span>
+                <button class="btn btn-alt" @click="cancel('upload')">
+                    <i class="material-icons">redo</i>
+                    Scan again
+                </button>
+
+            </section>
+
+
+            <!-- ======================================================================
+            DEFAULT VIEW
+            ====================================================================== -->
+
+
+            <section key="landing" class="wrapper landing animated fadeIn" v-else>
+                <div class="left">
+                    <article>
+                        <h1>
+                            Machine learning <span>for COVID detection in X-Ray images.</span>
+                        </h1>
+                        <p class="subtitle">
+                            Powered by <a href="https://www.tensorflow.org/">Google TensorFlow</a>
+                        </p>
+                        <form class="frontPageForm" @submit.prevent="view='upload'">
+                            <div class="acknowledgements">
+                                <input class="checkbox" type="checkbox" name="requiredCheckbox" required>By clicking
+                                this checkbox you are acknowledging that this scan will not replace medical advice. To
+                                see how it all works please visit the <a href="/how-it-works">How It Works</a>
+                                page.</input> <br/>
+                                <input class="checkbox" type="checkbox" name="requiredCheckbox" required>By clicking
+                                this checkbox you are acknowledging that you have read and agreed to our <a
+                                    href="/privacypolicy">Privacy Policy</a></input> <br/>
+                            </div>
+                            <button type="submit" class="btn btn-cta">
+                                <i class="material-icons">image_search</i>
+                                <span>
                   <b>Scan Now</b>
                   <em>Test for COVID-19 probability</em>
                 </span>
-              </button>
-            </form>
-            <div class="links sharethis-inline-share-buttons"></div>
-          </article>
-        </div>
+                            </button>
+                        </form>
+                        <div class="links sharethis-inline-share-buttons"></div>
+                    </article>
+                </div>
 
-        <div class="right">
-          <div class="phone-container">
-            <div class="phone">
-              <div class="notch"></div>
-              <div class="volume-buttons">
-                <div class="vb vb-ringer"></div>
-                <div class="vb vb-up"></div>
-                <div class="vb vb-down"></div>
-              </div>
-              <div class="power-button"></div>
-              <div class="screen">
-                <img  draggable="false" src="{% static 'img/app-layout.png' %}" alt="COVID Scan app screenshot">
-              </div>
-            </div>
-            <div class="phone-popup">
-              <img  draggable="false" src="{% static 'img/result-layout.png' %}" alt="COVID Scan results screenshot">
-            </div>
-          </div>
-        </div>
-      </section>
+                <div class="right">
+                    <div class="phone-container">
+                        <div class="phone">
+                            <div class="notch"></div>
+                            <div class="volume-buttons">
+                                <div class="vb vb-ringer"></div>
+                                <div class="vb vb-up"></div>
+                                <div class="vb vb-down"></div>
+                            </div>
+                            <div class="power-button"></div>
+                            <div class="screen">
+                                <img draggable="false" src="{% static 'img/app-layout.png' %}"
+                                     alt="COVID Scan app screenshot">
+                            </div>
+                        </div>
+                        <div class="phone-popup">
+                            <img draggable="false" src="{% static 'img/result-layout.png' %}"
+                                 alt="COVID Scan results screenshot">
+                        </div>
+                    </div>
+                </div>
+            </section>
 
 
-      
+        </transition>
 
-    </transition>
+    </main>
 
-  </main>
+    <!-- these scripts are only needed in this file -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="{% static 'js/app.js' %}"></script>
 
-  <!-- these scripts are only needed in this file -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
-  <script src="{% static 'js/app.js' %}"></script>
-    
 {% endblock %}
