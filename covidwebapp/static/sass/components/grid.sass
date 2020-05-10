@@ -1,0 +1,29 @@
+.grid
+  list-style: none
+  margin: 0
+  margin-bottom: -3em
+  padding: 0
+  display: flex
+  flex-wrap: wrap
+
+  li
+    margin-bottom: 4em
+
+    picture, img
+      width: 100%
+
+    h3, p
+      width: 90%
+      margin: 1em 0 0
+    
+  @media screen and (min-width: 640px)
+    li
+      width: calc((100% - 4em) / 2)
+      display: flex
+      flex-direction: column
+      align-items: flex-start
+      margin-right: 2em
+
+      &:nth-of-type(2n)
+        margin-right: 0
+        margin-left: 2em
