@@ -1,21 +1,19 @@
 /* global Vue */
-
 const app = new Vue({
-
   // element where the app lives
-  el: '#app',
-  delimiters: ['[[',']]'],
+  el: "#app",
+  delimiters: ["[[", "]]"],
 
   // app state
   data: {
-    isActive: true,
+    isActive: false,
     image: null,
     file: null,
 
     // image specs
-    validTypes: ['image/jpeg', 'image/png'],
+    validTypes: ["image/jpeg", "image/png"],
     maxSize: 2 * 1024 * 1024, // 2 MB
-    url: 'result/',
+    url: "result/",
 
     // user acknowledgements
     notForMedicalUse: false,
@@ -23,39 +21,35 @@ const app = new Vue({
 
     // upload status
     uploading: false,
-    results: null
+    results: null,
   },
 
   // computed values
   computed: {
     output() {
       const LOOKUP = {
-        'healthy_prob': 'Healthy lungs',
-        'pneumonia_prob': 'Pneumonia',
-        'covid_prob': 'COVID-19',
-        'rest_prob': 'Other'
+        healthy_prob: "Healthy lungs",
+        pneumonia_prob: "Pneumonia",
+        covid_prob: "COVID-19",
+        rest_prob: "Other",
       };
 
       return Object.entries(this.results || {})
-        .filter(([check]) => check !== 'xray_prob')
+        .filter(([check]) => check !== "xray_prob")
         .map(([check, value]) => {
           return [
             LOOKUP[check],
             `${(value * 100).toFixed(2)}%`,
-            value < 0.3
-              ? 'low'
-              : value < 0.6
-                ? 'med'
-                : 'high'
+            value < 0.3 ? "low" : value < 0.6 ? "med" : "high",
           ];
         });
-    }
+    },
   },
 
   // app methods and lifecycle stuff
   methods: {
     clearImage() {
-      document.querySelector('input[type=file').value = '';
+      document.querySelector("input[type=file").value = "";
       this.file = null;
       this.image = null;
       this.results = null;
@@ -68,47 +62,41 @@ const app = new Vue({
 
       // check if the file is an image
       if (this.validTypes.includes(file.type)) {
-
         // check if the file is less than 2 MB
         if (file.size > this.maxSize) {
-          alert('Error: Exceeded max size');
+          alert("Error: Exceeded max size");
           return false;
         } else {
           // all good
           const reader = new FileReader();
-          reader.onload = f => {
+          reader.onload = (f) => {
             this.image = f.target.result;
             this.file = file;
           };
 
-          reader.readAsDataURL(file);  
-        }        
+          reader.readAsDataURL(file);
+        }
       } else {
-        alert('Error: Incorrect file type');
+        alert("Error: Incorrect file type");
         return false;
       }
     },
 
     // upload it
     handleSubmit() {
-
       const formData = new FormData();
-      formData.append('image', this.file);
-      
+      formData.append("image", this.file);
+
       this.uploading = true;
       fetch(this.url, {
-        method: 'POST',
-        body: formData
+        method: "POST",
+        body: formData,
       })
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           this.results = data;
           this.uploading = false;
         });
-
-    }
-
-
-  }
-
+    },
+  },
 });

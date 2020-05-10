@@ -2,93 +2,119 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163424993-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-163424993-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-    gtag('config', 'UA-163424993-1');
-  </script>
+      gtag("config", "UA-163424993-1");
+    </script>
 
-  <!-- stylesheets and such -->
-  <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
-  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/png">
+    <!-- stylesheets and such -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'img/favicon.png' %}"
+      type="image/png"
+    />
 
-  <!-- meta info -->
-  <title>COVID Scan Test</title>
-  <meta name="description" content="Check for the probability of COVID-19 in scans using machine learning.">
-  <meta name="author" content="COVID Scan App Team">
+    <!-- meta info -->
+    <title>COVID Scan Test</title>
+    <meta
+      name="description"
+      content="Check for the probability of COVID-19 in scans using machine learning."
+    />
+    <meta name="author" content="COVID Scan App Team" />
 
-  <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary_large_image" />
 
-  <meta property="og:title" content="COVID Scan Test">
-  <meta property="og:description" content="Check for the probability of COVID-19 in scans using machine learning.">
-  <meta property="og:image" content="{% static 'img/social.jpg' %}">
-  <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="764">
-  <meta property="og:image:height" content="409">
-  <meta property="og:image:alt" content="COVID Scan - Check for the probability of COVID-19 in scans using machine learning.">
-  <meta property="og:url" content="https://covidscantest.com">
-  <meta property="og:type" content="website">
-  <meta name="theme-color" content="#51BEE0">
+    <meta property="og:title" content="COVID Scan Test" />
+    <meta
+      property="og:description"
+      content="Check for the probability of COVID-19 in scans using machine learning."
+    />
+    <meta property="og:image" content="{% static 'img/social.jpg' %}" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="764" />
+    <meta property="og:image:height" content="409" />
+    <meta
+      property="og:image:alt"
+      content="COVID Scan - Check for the probability of COVID-19 in scans using machine learning."
+    />
+    <meta property="og:url" content="https://covidscantest.com" />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#51BEE0" />
 
-  <!-- sharethis buttons -->
-  <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e92739a5d9bf5001283ba59&product=inline-share-buttons' async='async'></script>
+    <!-- sharethis buttons -->
+    <script
+      type="text/javascript"
+      src="https://platform-api.sharethis.com/js/sharethis.js#property=5e92739a5d9bf5001283ba59&product=inline-share-buttons"
+      async="async"
+    ></script>
 
-  <!-- fontawesome icons -->
-  <script src="https://kit.fontawesome.com/2790ddc3f5.js" crossorigin="anonymous"></script>
+    <!-- fontawesome icons -->
+    <script
+      src="https://kit.fontawesome.com/2790ddc3f5.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <nav id="navbar">
+      <a href="{% url 'scandetector:index' %}" class="logo">Covidscan</a>
+      <ul>
+        <!-- <li><a href="#">Data</a></li> -->
+        <li><a href="{% url 'scandetector:team' %}">Team</a></li>
+      </ul>
+    </nav>
 
-</head>
-<body>
-  
-  <nav id="navbar">
-    <a href="{% url 'scandetector:index' %}" class="logo">Covidscan</a>
-    <ul>
-      <!-- <li><a href="#">Data</a></li> -->
-      <li><a href="{% url 'scandetector:team' %}">Team</a></li>
-    </ul>
-  </nav>
+    <main>
+      {% block body_content %} {% endblock %}
+    </main>
 
-  <main>
+    <div class="push"></div>
+    <!-- this exists for spacing -->
 
-    {% block body_content %}
-    {% endblock %}
+    <footer>
+      <div class="wrapper">
+        <article>
+          <div class="left">
+            <h4>Covidscan</h4>
+            <ul class="links">
+              <li><a href="{% url 'scandetector:how' %}">How it Works</a></li>
+              <li><a href="{% url 'scandetector:team' %}">Team</a></li>
+              <li>
+                <a href="{% url 'scandetector:privacy' %}">Privacy Policy</a>
+              </li>
+            </ul>
+          </div>
+          <div class="right">
+            <div class="links sharethis-inline-share-buttons"></div>
+          </div>
+        </article>
+      </div>
+    </footer>
 
-  </main>
-
-  <div class="push"></div> <!-- this exists for spacing -->
-
-  <footer>
-    <div class="wrapper">
-      <article>
-        <div class="left">
-          <h4>Covidscan</h4>
-          <ul class="links">
-            <li><a href="{% url 'scandetector:how' %}">How it Works</a></li>
-            <li><a href="{% url 'scandetector:team' %}">Team</a></li>
-            <li><a href="{% url 'scandetector:privacy' %}">Privacy Policy</a></li>
-          </ul>
-        </div>
-        <div class="right">
-          <div class="links sharethis-inline-share-buttons"></div>
-        </div>
-      </article>
-      
-    </div>
-  </footer>
-
-  <!-- hidden form -->
-  <form style="display: none;" action="{% url 'scandetector:result' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="image">
-    <input type="submit">
-  </form>
-  
-</body>
+    <!-- hidden form -->
+    <form
+      style="display: none;"
+      action="{% url 'scandetector:result' %}"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <input type="file" name="image" />
+      <input type="submit" />
+    </form>
+  </body>
 </html>

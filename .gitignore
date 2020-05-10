@@ -128,12 +128,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
 .hdf5
-
 *.h5
 
-run_local.sh
-
-#folder
+# Weights folder
 weights
