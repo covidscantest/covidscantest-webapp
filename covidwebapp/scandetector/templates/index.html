@@ -4,7 +4,7 @@
 
 {% block body_content %}
 
-<section class="hero">
+<section class="hero" id="app" aria-live="polite">
   <article class="left">
     <h1>
       Machine learning
@@ -17,7 +17,7 @@
       Covidscan does NOT replace medical advice, and is intended to be used for informational purposes only.
     </p>
     <p>
-      <a href="#" class="btn">Scan now</a>
+      <button @click="isActive = true" class="btn">Scan now</button>
     </p>
   </article>
 
@@ -27,6 +27,44 @@
       <img src="{% static 'img/hospital-care.jpg' %}" alt="Doctors attending to a patient in a hospital">
     </picture>
   </article>
+
+  <div class="app" :class="{active: isActive}" :aria-hidden="!isActive">
+    <div class="wrapper">
+      <h2>[[uploading ? 'Processing...' : results ? 'Results' : 'Scan now']]</h2>
+      <div class="app-content">
+        <div class="preview" :class="{hasContent: image}">
+          <img :src="image" alt="Your selected image">
+        </div>
+        <form class="right" @submit.prevent="handleSubmit">
+          <div :class="{loading: (uploading || results), done: results}" :aria-hidden="results">
+            <input @change="handleImage" type="file" accept="image/jpeg, image/png" required name="image" id="image">
+            <p class="info">JPG or PNG file, up to 2 MB.</p>
+            <p class="input-group">
+              <input required v-model="notForMedicalUse" type="checkbox" name="not-for-medical-use" id="medical">
+              <label for="medical">By clicking this checkbox you are acknowledging that this scan does NOT replace medical advice.</label>
+            </p>
+            <p class="input-group">
+              <input required v-model="privacyPolicy" type="checkbox" name="privacy-policy" id="privacy">
+              <label for="privacy">By clicking this checkbox you are acknowledging that you have read and agreed to our <a href="/privacy">Privacy Policy</a></label>
+            </p>
+            <button class="btn">Upload</button>
+            <button @click.prevent="clearImage" class="btn btn-alt">Close</button>
+          </div>
+          <div class="results" :class="{visible: results}" :aria-hidden="!results">
+            <ul>
+              <li v-for="[check, value, status] in output" :key="check">
+                <p><span :class="status">[[check]]:</span> <strong>[[value]]</strong></p>
+                <div class="line-container">
+                  <div class="line" :class="`${check[0].toLowerCase()} ${status}`" :style="{width: value}"></div>
+                </div>
+              </li>
+            </ul>
+            <button @click.prevent="clearImage" class="btn btn-alt">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="mission">
@@ -96,10 +134,13 @@
 
 <section class="call-to-action">
   <div class="wrapper">
-    <p class="subtitle"></p>
     <h2>Fighting the pandemic together.</h2>
     <p>While this is still a prototype, we are looking for individuals and hospitals willing to test or implement Covidscan to produce measurable data to improve our algorithms and application.</p>
   </div>
 </section>
+
+<!-- interactivity -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+<script src="{% static 'js/app.js' %}"></script>
     
 {% endblock %}
