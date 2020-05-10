@@ -46,6 +46,7 @@
             :class="{loading: (uploading || results), done: results}"
             :aria-hidden="results"
           >
+            <p class="error" v-if="error">[[error]]</p>
             <input
               @change="handleImage"
               type="file"

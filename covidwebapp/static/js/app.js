@@ -22,6 +22,7 @@ const app = new Vue({
     // upload status
     uploading: false,
     results: null,
+    error: null,
   },
 
   // computed values
@@ -52,6 +53,7 @@ const app = new Vue({
       document.querySelector("input[type=file").value = "";
       this.file = null;
       this.image = null;
+      this.error = null;
       this.results = null;
       this.isActive = false;
     },
@@ -72,6 +74,7 @@ const app = new Vue({
           reader.onload = (f) => {
             this.image = f.target.result;
             this.file = file;
+            this.error = null;
           };
 
           reader.readAsDataURL(file);
@@ -88,6 +91,7 @@ const app = new Vue({
       formData.append("image", this.file);
 
       this.uploading = true;
+      this.error = null;
       fetch(this.url, {
         method: "POST",
         body: formData,
@@ -95,6 +99,11 @@ const app = new Vue({
         .then((res) => res.json())
         .then((data) => {
           this.results = data;
+          this.uploading = false;
+        })
+        .catch((err) => {
+          console.error(err);
+          this.error = "Something wen't wrong. Please try again later";
           this.uploading = false;
         });
     },

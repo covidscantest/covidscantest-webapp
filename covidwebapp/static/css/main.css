@@ -52,6 +52,11 @@ a {
   }
 }
 
+.error {
+  color: var(--colorError);
+  margin: 0 0 1em;
+}
+
 nav {
   padding: 1em var(--sizePadding);
   display: flex;
