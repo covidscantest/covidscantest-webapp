@@ -4,11 +4,11 @@
   <article class="left">
     <h1>
       Machine learning
-      <span>for early detection.</span>
+      <span>for early COVID detection in X-RAY.</span>
     </h1>
     <p>
-      Introducing Covidscan, a prototype system to aid in the diagnosis of chest
-      X-ray img using deep learning technologies.
+      Introducing Covidscan, a "proof of concept" system to aid in the diagnosis of COVID in chest
+      X-ray images using deep learning technologies.
     </p>
     <p class="disclaimer">
       Covidscan does NOT replace medical advice, and is intended to be used for
@@ -17,6 +17,7 @@
     <p>
       <button @click="isActive = true" class="btn">Scan now</button>
     </p>
+      <div class="links sharethis-inline-share-buttons"></div>
   </article>
 
   <article class="right">
@@ -231,10 +232,7 @@
     </picture>
 
     <p>
-      Our model is an ensemble of many pre-trained COVNets. Networks that were
-      pre-trained on thorax-image classification were transferred to COVID-19
-      detection. Then we used a mixture model for aggregation of multiple weak
-      classifiers.
+      Our model is an ensemble of several trained neural networks. We used mostly DenseNet201 architecture and public data.
     </p>
     <a href="{% url 'scandetector:how' %}"
       >Read more <i class="fas fa-chevron-right"></i
@@ -246,8 +244,7 @@
   <div class="wrapper">
     <h2>Fighting the pandemic together.</h2>
     <p>
-      While this is still a prototype, we are looking for individuals and
-      hospitals willing to test or implement Covidscan to produce measurable
+      While this is still a "proof of concept", we would be happy if anyone could test or implement Covidscan to produce measurable
       data to improve our algorithms and application.
     </p>
   </div>
