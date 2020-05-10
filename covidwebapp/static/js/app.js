@@ -8,14 +8,14 @@ const app = new Vue({
 
   // app state
   data: {
-    isActive: false,
+    isActive: true,
     image: null,
     file: null,
 
     // image specs
     validTypes: ['image/jpeg', 'image/png'],
     maxSize: 2 * 1024 * 1024, // 2 MB
-    url: 'https://cors-anywhere.herokuapp.com/https://www.covidscantest.com/result/',
+    url: 'result/',
 
     // user acknowledgements
     notForMedicalUse: false,
@@ -34,7 +34,7 @@ const app = new Vue({
         'pneumonia_prob': 'Pneumonia',
         'covid_prob': 'COVID-19',
         'rest_prob': 'Other'
-      }
+      };
 
       return Object.entries(this.results || {})
         .filter(([check]) => check !== 'xray_prob')

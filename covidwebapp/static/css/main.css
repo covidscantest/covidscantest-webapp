@@ -538,40 +538,40 @@ table, th, td {
   opacity: 1;
   pointer-events: all;
 }
-.app .results ul {
+.app .results ul, .app .results p {
   margin: 0 0 2em;
   padding: 0;
   width: 100%;
   list-style: none;
 }
-.app .results ul li {
+.app .results ul li, .app .results p li {
   margin-bottom: 1em;
   width: 100%;
 }
-.app .results ul li p {
+.app .results ul li p, .app .results p li p {
   margin: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.app .results ul li p span.med, .app .results ul li p span.high {
+.app .results ul li p span.med, .app .results ul li p span.high, .app .results p li p span.med, .app .results p li p span.high {
   font-weight: bold;
 }
-.app .results ul li strong {
+.app .results ul li strong, .app .results p li strong {
   font-size: 0.9em;
 }
-.app .results ul li .line-container {
+.app .results ul li .line-container, .app .results p li .line-container {
   background: var(--colorLine);
   height: 2px;
   border-radius: 2px;
   margin: 0.5em 0;
 }
-.app .results ul li .line-container .line {
+.app .results ul li .line-container .line, .app .results p li .line-container .line {
   height: 100%;
   background: var(--colorButton);
   position: relative;
 }
-.app .results ul li .line-container .line::after {
+.app .results ul li .line-container .line::after, .app .results p li .line-container .line::after {
   content: "";
   position: absolute;
   left: 100%;
@@ -582,15 +582,15 @@ table, th, td {
   border-radius: 50%;
   background: inherit;
 }
-.app .results ul li .line-container .line.med {
+.app .results ul li .line-container .line.med, .app .results p li .line-container .line.med {
   background: var(--colorMed);
 }
-.app .results ul li .line-container .line.high {
+.app .results ul li .line-container .line.high, .app .results p li .line-container .line.high {
   background: var(--colorError);
 }
-.app .results ul li .line-container .line.h.low {
+.app .results ul li .line-container .line.h.low, .app .results p li .line-container .line.h.low {
   background: var(--colorError);
 }
-.app .results ul li .line-container .line.h.high {
+.app .results ul li .line-container .line.h.high, .app .results p li .line-container .line.h.high {
   background: var(--colorSuccess);
 }

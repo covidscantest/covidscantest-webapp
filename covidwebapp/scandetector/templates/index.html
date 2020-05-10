@@ -1,8 +1,4 @@
-{% extends 'layout.html' %}
-
-{% load static %}
-
-{% block body_content %}
+{% extends 'layout.html' %} {% load static %} {% block body_content %}
 
 <section class="hero" id="app" aria-live="polite">
   <article class="left">
@@ -11,10 +7,12 @@
       <span>for early detection.</span>
     </h1>
     <p>
-      Introducing Covidscan, a prototype system to aid in the diagnosis of chest X-ray img using deep learning technologies.
+      Introducing Covidscan, a prototype system to aid in the diagnosis of chest
+      X-ray img using deep learning technologies.
     </p>
     <p class="disclaimer">
-      Covidscan does NOT replace medical advice, and is intended to be used for informational purposes only.
+      Covidscan does NOT replace medical advice, and is intended to be used for
+      informational purposes only.
     </p>
     <p>
       <button @click="isActive = true" class="btn">Scan now</button>
@@ -23,43 +21,104 @@
 
   <article class="right">
     <picture>
-      <source srcset="{% static 'img/hospital-care.webp' %}" type="image/webp">
-      <img src="{% static 'img/hospital-care.jpg' %}" alt="Doctors attending to a patient in a hospital">
+      <source
+        srcset="{% static 'img/hospital-care.webp' %}"
+        type="image/webp"
+      />
+      <img
+        src="{% static 'img/hospital-care.jpg' %}"
+        alt="Doctors attending to a patient in a hospital"
+      />
     </picture>
   </article>
 
   <div class="app" :class="{active: isActive}" :aria-hidden="!isActive">
     <div class="wrapper">
-      <h2>[[uploading ? 'Processing...' : results ? 'Results' : 'Scan now']]</h2>
+      <h2>
+        [[uploading ? 'Processing...' : results ? 'Results' : 'Scan now']]
+      </h2>
       <div class="app-content">
         <div class="preview" :class="{hasContent: image}">
-          <img :src="image" alt="Your selected image">
+          <img :src="image" alt="Your selected image" />
         </div>
         <form class="right" @submit.prevent="handleSubmit">
-          <div :class="{loading: (uploading || results), done: results}" :aria-hidden="results">
-            <input @change="handleImage" type="file" accept="image/jpeg, image/png" required name="image" id="image">
+          <div
+            :class="{loading: (uploading || results), done: results}"
+            :aria-hidden="results"
+          >
+            <input
+              @change="handleImage"
+              type="file"
+              accept="image/jpeg, image/png"
+              required
+              name="image"
+              id="image"
+            />
             <p class="info">JPG or PNG file, up to 2 MB.</p>
             <p class="input-group">
-              <input required v-model="notForMedicalUse" type="checkbox" name="not-for-medical-use" id="medical">
-              <label for="medical">By clicking this checkbox you are acknowledging that this scan does NOT replace medical advice.</label>
+              <input
+                required
+                v-model="notForMedicalUse"
+                type="checkbox"
+                name="not-for-medical-use"
+                id="medical"
+              />
+              <label for="medical"
+                >By clicking this checkbox you are acknowledging that this scan
+                does NOT replace medical advice.</label
+              >
             </p>
             <p class="input-group">
-              <input required v-model="privacyPolicy" type="checkbox" name="privacy-policy" id="privacy">
-              <label for="privacy">By clicking this checkbox you are acknowledging that you have read and agreed to our <a href="/privacy">Privacy Policy</a></label>
+              <input
+                required
+                v-model="privacyPolicy"
+                type="checkbox"
+                name="privacy-policy"
+                id="privacy"
+              />
+              <label for="privacy"
+                >By clicking this checkbox you are acknowledging that you have
+                read and agreed to our
+                <a href="/privacy">Privacy Policy</a></label
+              >
             </p>
             <button class="btn">Upload</button>
-            <button @click.prevent="clearImage" class="btn btn-alt">Close</button>
+            <button @click.prevent="clearImage" class="btn btn-alt">
+              Close
+            </button>
           </div>
-          <div class="results" :class="{visible: results}" :aria-hidden="!results">
-            <ul>
+          <div
+            class="results"
+            :class="{visible: results}"
+            :aria-hidden="!results"
+          >
+            <ul v-if="results && results.xray_prob > 0.5">
               <li v-for="[check, value, status] in output" :key="check">
-                <p><span :class="status">[[check]]:</span> <strong>[[value]]</strong></p>
+                <p>
+                  <span :class="status">[[check]]:</span>
+                  <strong>[[value]]</strong>
+                </p>
                 <div class="line-container">
-                  <div class="line" :class="`${check[0].toLowerCase()} ${status}`" :style="{width: value}"></div>
+                  <div
+                    class="line"
+                    :class="`${check[0].toLowerCase()} ${status}`"
+                    :style="{width: value}"
+                  ></div>
                 </div>
               </li>
             </ul>
-            <button @click.prevent="clearImage" class="btn btn-alt">Close</button>
+            <p v-else>
+              This image doesn't look like a chest x-ray.<br />
+              If you are receiving this message in error, please let us know at
+              <a
+                href="mailto:info@covidscantest.com?subject=Incorrect%20Image%20Results"
+              >
+                info@covidscantest.com
+              </a>
+            </p>
+            <button @click.prevent="clearImage" class="btn btn-alt">
+              Close
+            </button>
           </div>
         </form>
       </div>
@@ -78,35 +137,74 @@
     <ul class="features grid">
       <li>
         <picture>
-          <source srcset="{% static 'img/covid-test.webp' %}" type="image/webp">
-          <img src="{% static 'img/covid-test.jpg' %}" alt="Volunteer conducting tests for coronavirus">
+          <source
+            srcset="{% static 'img/covid-test.webp' %}"
+            type="image/webp"
+          />
+          <img
+            src="{% static 'img/covid-test.jpg' %}"
+            alt="Volunteer conducting tests for coronavirus"
+          />
         </picture>
         <h3>Improve test accessibility</h3>
-        <p>X-ray facilities are more accessible than testing sites, and this could act as a way to conduct preliminary tests for COVID-19 and other conditions. This does not replace advice or diagnoses from medical professionals.</p>
+        <p>
+          X-ray facilities are more accessible than testing sites, and this
+          could act as a way to conduct preliminary tests for COVID-19 and other
+          conditions. This does not replace advice or diagnoses from medical
+          professionals.
+        </p>
       </li>
       <li>
         <picture>
-          <source srcset="{% static 'img/diagnosis.webp' %}" type="image/webp">
-          <img src="{% static 'img/diagnosis.jpg' %}" alt="Chest X-ray showing healthy lungs">
+          <source
+            srcset="{% static 'img/diagnosis.webp' %}"
+            type="image/webp"
+          />
+          <img
+            src="{% static 'img/diagnosis.jpg' %}"
+            alt="Chest X-ray showing healthy lungs"
+          />
         </picture>
         <h3>Diagnose multiple conditions</h3>
-        <p>With the currently available (and growing) datasets, Covidscan can analyze chest X-ray images and provide diverse and informative predictions.</p>
+        <p>
+          With the currently available (and growing) datasets, Covidscan can
+          analyze chest X-ray images and provide diverse and informative
+          predictions.
+        </p>
       </li>
       <li>
         <picture>
-          <source srcset="{% static 'img/radiology.webp' %}" type="image/webp">
-          <img src="{% static 'img/radiology.jpg' %}" alt="A radiologist studying different img">
+          <source
+            srcset="{% static 'img/radiology.webp' %}"
+            type="image/webp"
+          />
+          <img
+            src="{% static 'img/radiology.jpg' %}"
+            alt="A radiologist studying different img"
+          />
         </picture>
         <h3>Innovate radiology</h3>
-        <p>Covidscan could be used as a tool to automate part of the radiological processes, acting as a preliminary check for specified conditions.</p>
+        <p>
+          Covidscan could be used as a tool to automate part of the radiological
+          processes, acting as a preliminary check for specified conditions.
+        </p>
       </li>
       <li>
         <picture>
-          <source srcset="{% static 'img/efficiency.webp' %}" type="image/webp">
-          <img src="{% static 'img/efficiency.jpg' %}" alt="Patients in an intensive care unit">
+          <source
+            srcset="{% static 'img/efficiency.webp' %}"
+            type="image/webp"
+          />
+          <img
+            src="{% static 'img/efficiency.jpg' %}"
+            alt="Patients in an intensive care unit"
+          />
         </picture>
         <h3>Provide quality</h3>
-        <p>Increasing efficiency is key in parts of the world where healthcare systems get overburdened as the epidemic spreads.</p>
+        <p>
+          Increasing efficiency is key in parts of the world where healthcare
+          systems get overburdened as the epidemic spreads.
+        </p>
       </li>
     </ul>
   </div>
@@ -121,26 +219,41 @@
     </h2>
 
     <picture class="cover">
-      <source srcset="{% static 'img/machine-learning.webp' %}" type="image/webp">
-      <img src="{% static 'img/machine-learning.jpg' %}" alt="Graphic representation of neural networks">
+      <source
+        srcset="{% static 'img/machine-learning.webp' %}"
+        type="image/webp"
+      />
+      <img
+        src="{% static 'img/machine-learning.jpg' %}"
+        alt="Graphic representation of neural networks"
+      />
     </picture>
 
     <p>
-      Our model is an ensemble of  many pre-trained COVNets.   Networks that were pre-trained on thorax-image classification were transferred to COVID-19 detection.  Then we used a mixture model for aggregation of multiple weak classifiers.
+      Our model is an ensemble of many pre-trained COVNets. Networks that were
+      pre-trained on thorax-image classification were transferred to COVID-19
+      detection. Then we used a mixture model for aggregation of multiple weak
+      classifiers.
     </p>
-    <a href="{% url 'scandetector:how' %}">Read more <i class="fas fa-chevron-right"></i></a>
+    <a href="{% url 'scandetector:how' %}"
+      >Read more <i class="fas fa-chevron-right"></i
+    ></a>
   </div>
 </section>
 
 <section class="call-to-action">
   <div class="wrapper">
     <h2>Fighting the pandemic together.</h2>
-    <p>While this is still a prototype, we are looking for individuals and hospitals willing to test or implement Covidscan to produce measurable data to improve our algorithms and application.</p>
+    <p>
+      While this is still a prototype, we are looking for individuals and
+      hospitals willing to test or implement Covidscan to produce measurable
+      data to improve our algorithms and application.
+    </p>
   </div>
 </section>
 
 <!-- interactivity -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
 <script src="{% static 'js/app.js' %}"></script>
-    
+
 {% endblock %}
