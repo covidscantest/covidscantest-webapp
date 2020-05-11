@@ -4,11 +4,11 @@
   <article class="left">
     <h1>
       Machine learning
-      <span>for early COVID detection in X-RAY.</span>
+      <span>for early COVID-19 detection in X-rays.</span>
     </h1>
     <p>
-      Introducing Covidscan, a "proof of concept" system to aid in the diagnosis of COVID in chest
-      X-ray images using deep learning technologies.
+      Introducing Covidscan, a "proof of concept" system to aid in the diagnosis
+      of COVID-19 in chest X-ray images using deep learning technologies.
     </p>
     <p class="disclaimer">
       Covidscan does NOT replace medical advice, and is intended to be used for
@@ -17,7 +17,9 @@
     <p>
       <button @click="isActive = true" class="btn">Scan now</button>
     </p>
-      <div class="links sharethis-inline-share-buttons"></div>
+    <div class="share">
+      <div class="sharethis-inline-share-buttons"></div>
+    </div>
   </article>
 
   <article class="right">
@@ -33,6 +35,7 @@
     </picture>
   </article>
 
+  <!-- APP VIEW -->
   <div class="app" :class="{active: isActive}" :aria-hidden="!isActive">
     <div class="wrapper">
       <h2>
@@ -43,6 +46,7 @@
           <img :src="image" alt="Your selected image" />
         </div>
         <form class="right" @submit.prevent="handleSubmit">
+          <!-- IMAGE SELECTION VIEW -->
           <div
             :class="{loading: (uploading || results), done: results}"
             :aria-hidden="results"
@@ -89,6 +93,8 @@
               Close
             </button>
           </div>
+
+          <!-- RESULTS PAGE -->
           <div
             class="results"
             :class="{visible: results}"
@@ -232,7 +238,8 @@
     </picture>
 
     <p>
-      Our model is an ensemble of several trained neural networks. We used mostly DenseNet201 architecture and public data.
+      Our model is an ensemble of several trained neural networks. We used
+      mostly DenseNet201 architecture and public data.
     </p>
     <a href="{% url 'scandetector:how' %}"
       >Read more <i class="fas fa-chevron-right"></i
@@ -244,8 +251,9 @@
   <div class="wrapper">
     <h2>Fighting the pandemic together.</h2>
     <p>
-      While this is still a "proof of concept", we would be happy if anyone could test or implement Covidscan to produce measurable
-      data to improve our algorithms and application.
+      While this is still a "proof of concept", we would be happy if anyone
+      could test or implement Covidscan to produce measurable data to improve
+      our algorithms and application.
     </p>
   </div>
 </section>

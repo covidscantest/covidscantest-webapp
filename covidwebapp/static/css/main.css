@@ -14,7 +14,7 @@ html {
   --colorTable: #BBBBBB;
   --colorLine: #DDDDDD;
   --colorButtonText: #FFFFFF;
-  --colorButton: #5C897E;
+  --colorButton: #43A4B1;
   --colorError: #D26F88;
   --colorSuccess: #6dc255;
   --colorMed: #DE905B;
@@ -60,19 +60,44 @@ a {
 nav {
   padding: 1em var(--sizePadding);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
   background: var(--colorAlt);
   transition: all 0.2s ease;
-  position: absolute;
+  position: static;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1;
 }
+nav .logo {
+  font-weight: bold;
+  color: var(--colorButton);
+}
+nav ul {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  display: flex;
+}
+nav ul li {
+  margin-right: 1rem;
+  font-size: 0.6em;
+  font-weight: bold;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+nav ul li a {
+  width: 100%;
+  display: block;
+}
 @media screen and (min-width: 640px) {
   nav {
     background: none;
+    align-items: center;
+    position: absolute;
+    flex-direction: row;
   }
   nav::before {
     content: "";
@@ -85,18 +110,14 @@ nav {
     opacity: 0.75;
     z-index: -1;
   }
-}
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-nav ul li {
-  margin-left: 1rem;
-  font-size: 0.6em;
-  font-weight: bold;
-  text-transform: uppercase;
+  nav ul {
+    margin: 0;
+    text-align: right;
+  }
+  nav ul li {
+    margin-right: 0;
+    margin-left: 1rem;
+  }
 }
 
 .hero {
@@ -105,7 +126,7 @@ nav ul li {
   padding: 0;
   background: var(--colorAlt);
   position: relative;
-  height: 100vh;
+  height: 100%;
   min-height: 35em;
 }
 @media screen and (min-width: 640px) {
@@ -117,7 +138,6 @@ nav ul li {
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
   height: 100%;
 }
@@ -130,15 +150,19 @@ nav ul li {
   display: none;
 }
 .hero article.left {
-  padding: calc(var(--sizePadding) * 2) var(--sizePadding);
+  padding: var(--sizePadding);
 }
-.hero article.left > h1, .hero article.left > p {
+@media screen and (min-width: 640px) {
+  .hero article.left {
+    padding-top: calc(var(--sizePadding) * 2);
+  }
+}
+.hero article.left > h1, .hero article.left > p, .hero article.left > .share {
   width: 100%;
   max-width: 20rem;
 }
 .hero article.left h1 {
   line-height: 1;
-  margin-top: 1em;
   margin-bottom: 1rem;
 }
 .hero article.left p {
@@ -152,9 +176,19 @@ nav ul li {
   padding: 0.5rem;
   margin-bottom: 1.5rem;
 }
+.hero article.left .share {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5em;
+  justify-content: flex-start;
+}
+.hero article.left .share #st-1 {
+  position: static !important;
+}
 @media screen and (min-width: 640px) {
   .hero article {
     width: 50%;
+    justify-content: center;
   }
   .hero article.left {
     padding: var(--sizePadding);
@@ -186,7 +220,7 @@ section .block {
 section header {
   width: 100%;
   height: 6em;
-  margin: calc(var(--sizePadding) + .1em) calc(-1 * var(--sizePadding)) calc(-1 * var(--sizePadding));
+  margin: 0 calc(-1 * var(--sizePadding)) calc(-1 * var(--sizePadding));
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -202,6 +236,11 @@ section header p {
   margin: 0;
   font-size: 0.8em;
   color: var(--colorDim);
+}
+@media screen and (min-width: 640px) {
+  section header {
+    margin: var(--sizePadding) calc(-1 * var(--sizePadding)) calc(-1 * var(--sizePadding));
+  }
 }
 section h2 {
   margin-bottom: 1em;
@@ -429,6 +468,10 @@ table, th, td {
   margin-left: 0.8rem;
   font-size: 1.2em;
 }
+.team .contacts {
+  padding-top: 0 !important;
+  margin-bottom: var(--sizePadding);
+}
 
 .how article {
   margin-bottom: 3em;
@@ -459,6 +502,7 @@ table, th, td {
   pointer-events: none;
   transition: all 0.3s ease;
   -webkit-user-select: none;
+      -ms-user-select: none;
           user-select: none;
   overflow-y: auto;
 }

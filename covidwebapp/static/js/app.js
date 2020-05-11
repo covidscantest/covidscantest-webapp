@@ -11,9 +11,9 @@ const app = new Vue({
     file: null,
 
     // image specs
-    validTypes: ['image/jpeg', 'image/png'],
+    validTypes: ["image/jpeg", "image/png"],
     maxSize: 5 * 1024 * 1024, // 5 MB
-    url: '/result/',
+    url: "/result/",
 
     // user acknowledgements
     notForMedicalUse: false,
