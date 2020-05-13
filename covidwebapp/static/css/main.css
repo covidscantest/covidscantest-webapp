@@ -69,7 +69,7 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
 }
 nav .logo {
   font-weight: bold;
@@ -126,8 +126,7 @@ nav ul li a {
   padding: 0;
   background: var(--colorAlt);
   position: relative;
-  height: 100%;
-  min-height: 35em;
+  min-height: 36em;
 }
 @media screen and (min-width: 640px) {
   .hero {
@@ -154,16 +153,16 @@ nav ul li a {
 }
 @media screen and (min-width: 640px) {
   .hero article.left {
-    padding-top: calc(var(--sizePadding) * 2);
+    align-items: center;
   }
 }
 .hero article.left > h1, .hero article.left > p, .hero article.left > .share {
   width: 100%;
   max-width: 20rem;
+  margin: 0 0 1em;
 }
 .hero article.left h1 {
   line-height: 1;
-  margin-bottom: 1rem;
 }
 .hero article.left p {
   font-weight: 300;
@@ -184,14 +183,12 @@ nav ul li a {
 }
 .hero article.left .share #st-1 {
   position: static !important;
+  z-index: 1;
 }
 @media screen and (min-width: 640px) {
   .hero article {
     width: 50%;
     justify-content: center;
-  }
-  .hero article.left {
-    padding: var(--sizePadding);
   }
   .hero article.left h1 span {
     display: block;
@@ -494,7 +491,7 @@ table, th, td {
   background: var(--colorAlt);
   height: 100%;
   position: absolute;
-  padding: calc(var(--sizePadding) * 2) var(--sizePadding) var(--sizePadding);
+  padding: var(--sizePadding);
   top: 0;
   left: 0;
   right: 0;
@@ -505,6 +502,7 @@ table, th, td {
       -ms-user-select: none;
           user-select: none;
   overflow-y: auto;
+  z-index: 1;
 }
 .app h2 {
   margin: 0 0 1rem;
@@ -552,6 +550,9 @@ table, th, td {
   margin-bottom: 1em;
 }
 @media screen and (min-width: 640px) {
+  .app {
+    padding-top: calc(var(--sizePadding) * 2);
+  }
   .app .app-content {
     display: flex;
   }
